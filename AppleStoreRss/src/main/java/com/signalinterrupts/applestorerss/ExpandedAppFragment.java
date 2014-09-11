@@ -72,6 +72,12 @@ public class ExpandedAppFragment extends Fragment {
 		return view;
 	}
 
+	public void updateFavorite(UUID id) {
+		if (mAppleApp.getId().equals(id)) {
+			mFavoriteCheckBox.setChecked(!mFavoriteCheckBox.isChecked());
+		}
+	}
+
 	/**
 	 * Required interface for hosting activities;
 	 */

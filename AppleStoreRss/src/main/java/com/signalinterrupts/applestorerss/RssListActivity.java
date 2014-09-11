@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CheckBox;
 
 
 public class RssListActivity extends ActionBarActivity implements RssListFragment.RssCallbacks, ExpandedAppFragment.ExpandedCallbacks {
@@ -45,6 +46,17 @@ public class RssListActivity extends ActionBarActivity implements RssListFragmen
 
 			fragmentTransaction.add(R.id.detailFragmentContainer, newDetail);
 			fragmentTransaction.commit();
+		}
+	}
+
+	@Override
+	public void onListItemUpdated(AppleApp appleApp) {
+		if (findViewById(R.id.detailFragmentContainer) != null) {
+			FragmentManager fragmentManager = getSupportFragmentManager();
+			ExpandedAppFragment fragment = (ExpandedAppFragment) fragmentManager.findFragmentById(R.id.detailFragmentContainer);
+			if (fragment != null) {
+				fragment.updateFavorite(appleApp.getId());
+			}
 		}
 	}
 

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -18,7 +19,6 @@ import java.util.ArrayList;
 
 public class RssListFragment extends ListFragment {
 
-	private ArrayList<AppleApp> mAppleApps;
 	private RssCallbacks mRssCallbacks;
 
 	@Override
@@ -27,7 +27,7 @@ public class RssListFragment extends ListFragment {
 		// Check if necessary --v
 		getActivity().setTitle(getString(R.string.list_fragment_title));
 
-		mAppleApps = DataOrganizer.get(getActivity()).getAppleApps();
+		ArrayList<AppleApp> mAppleApps = DataOrganizer.get(getActivity()).getAppleApps();
 
 		RssAdapter adapter = new RssAdapter(mAppleApps);
 		setListAdapter(adapter);
@@ -98,6 +98,7 @@ public class RssListFragment extends ListFragment {
 
 	public interface RssCallbacks {
 		void onAppSelected(AppleApp appleApp);
+		void onListItemUpdated(AppleApp appleApp);
 	}
 
 	private class RssAdapter extends ArrayAdapter<AppleApp> {
@@ -111,7 +112,7 @@ public class RssListFragment extends ListFragment {
 				convertView = getActivity().getLayoutInflater().inflate(R.layout.list_item_app, null);
 			}
 
-			AppleApp appleApp = getItem(position);
+			final AppleApp appleApp = getItem(position);
 
 			TextView appNameTextView = (TextView) convertView.findViewById(R.id.list_item_app_name);
 			appNameTextView.setText(appleApp.getAppTitle());
@@ -121,6 +122,13 @@ public class RssListFragment extends ListFragment {
 
 			CheckBox favoriteCheckBox = (CheckBox) convertView.findViewById(R.id.expanded_app_favoriteCheckBox);
 			favoriteCheckBox.setChecked(appleApp.isFavorite());
+			favoriteCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+				@Override
+				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+					appleApp.setFavorite(isChecked);
+					mRssCallbacks.onListItemUpdated(appleApp);
+				}
+			});
 
 			return convertView;
 		}
