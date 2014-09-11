@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_margin="16dp">
+
+
+	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	                xmlns:tools="http://schemas.android.com/tools"
+	                android:layout_width="match_parent"
+	                android:layout_height="wrap_content">
+
+		<ImageView
+			android:id="@+id/expanded_app_imageView"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginRight="8dp"
+			android:src="@drawable/blank_app_large"
+			tools:ignore="ContentDescription"/>
+
+		<TextView
+			android:id="@+id/expanded_app_titleTextView"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textSize="20sp"
+			android:layout_toRightOf="@id/expanded_app_imageView"
+			android:text="Blank App Title"
+			tools:ignore="HardcodedText"/>
+
+		<TextView
+			android:id="@+id/expanded_app_companyNameTextView"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/expanded_app_titleTextView"
+			android:layout_alignLeft="@id/expanded_app_titleTextView"
+			android:layout_marginTop="2dp"
+			android:text="Company Name"
+			tools:ignore="HardcodedText"/>
+
+		<CheckBox
+			android:id="@+id/expanded_app_favoriteCheckBox"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:button="@android:drawable/btn_star"
+			android:layout_alignParentRight="true"/>
+
+		<Button
+			android:id="@+id/expanded_app_purchaseButton"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignBottom="@id/expanded_app_imageView"
+			android:layout_alignRight="@id/expanded_app_favoriteCheckBox"
+			android:text="$2.99"
+			android:background="@drawable/button_shape_price"
+			tools:ignore="HardcodedText"/>
+
+	</RelativeLayout>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:layout_marginTop="20dp"
+		android:baselineAligned="false">
+
+		<RelativeLayout
+			android:layout_width="0dp"
+			android:layout_weight="1"
+			android:layout_height="wrap_content"
+			android:gravity="center">
+
+			<ImageView
+				android:id="@+id/expanded_app_genreImageView"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:src="@drawable/genre_default"
+				android:layout_alignParentLeft="true"
+				tools:ignore="ContentDescription"/>
+
+			<TextView
+				android:id="@+id/expanded_app_genreTextView"
+				android:layout_below="@id/expanded_app_genreImageView"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Genre"
+				tools:ignore="HardcodedText"/>
+
+		</RelativeLayout>
+
+		<RelativeLayout
+			android:layout_width="0dp"
+			android:layout_weight="1"
+			android:layout_height="wrap_content"
+			android:gravity="center">
+
+			<ImageView
+				android:id="@+id/expanded_app_shareImageView"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:src="@drawable/share_app"
+				tools:ignore="ContentDescription"/>
+
+			<TextView
+				android:layout_below="@id/expanded_app_shareImageView"
+				android:layout_alignLeft="@id/expanded_app_shareImageView"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="@string/share_app"/>
+		</RelativeLayout>
+
+	</LinearLayout>
+
+
+	<ScrollView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="20dp">
+
+		<LinearLayout
+			android:orientation="vertical"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+
+			<TextView
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="Introducing: Clan Wars! Crush enemy clans in clan versus clan battles. Lead your clan to victory! Clash of Clans is an epic combat strategy game. Build your village, train your troops and battle with millions of other players online!\n\nPLEASE NOTE! Clash of Clans is completely free to play, however some game items can also be purchased for real money. If you don't want to use this feature, please disable in-app purchases in your device's settings. Also, under our Terms of Service and Privacy Policy, you must be at least 13 years of age to play or download Clash of Clans.\n\nOver 1.5 Million 5 Star Reviews\n\n5/5  “This game is phenomenal”\n\n5/5  “If you were looking for a game to play that's fun and strategic this is better than any other game out there”\n\nClash of Clans is an addictive mixture of strategic planning and competitive fast-paced combats. Raise an army of Barbarians, War Wizards, Dragons and other mighty fighters. Join a clan of players and rise through the ranks, or create your own Clan to contest ownership of the Realm. Driving back the goblins is just the first step - your quest isn't over until your clan reigns supreme over all others!\n\n= FEATURES =\n- FREE TO PLAY\n- Build your village into a undefeatable fortress\n- Battle with players worldwide and take their Victory Points\n- Join together with other players to form the ultimate Clan\n- Fight against rival Clans in the epic Clan Wars\n- 15 unique units with multiple levels of upgrades\n- Defend your village with Cannons, Towers, Mortars, Bombs, Traps and Walls\n- Fight against the Goblin King in an epic campaign through the realm\n\nHaving any problems?  Any suggestions?  We would love to hear from you!  You can reach us at support at clashofclans.feedback@supercell.net \n\nNote: A network connection is required to play\n\nPrivacy Policy:\nhttp://www.supercell.net/privacy-policy/\n\nTerms of Service:\nhttp://www.supercell.net/terms-of-service/"
+				tools:ignore="HardcodedText"/>
+
+			<TextView
+				android:layout_marginTop="20dp"
+				android:id="@+id/expanded_app_dateTextView"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="August 2, 2014"
+				tools:ignore="HardcodedText"/>
+
+			<TextView
+				android:layout_marginTop="5dp"
+				android:id="@+id/expanded_app_copywriteTextView"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Copywrite Company Name"
+				tools:ignore="HardcodedText"/>
+		</LinearLayout>
+
+	</ScrollView>
+
+</LinearLayout>

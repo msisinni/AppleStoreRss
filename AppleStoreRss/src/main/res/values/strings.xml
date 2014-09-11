@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<string name="app_name">AppleStoreRss</string>
+	<string name="title_activity_rss_reader">RssReaderActivity</string>
+	<string name="hello_world">Hello world!</string>
+	<string name="action_settings">Settings</string>
+	<string name="list_fragment_title">Top 25 apps on the iTunes Store</string>
+	<string name="menu_item_favorites">View favorites</string>
+	<string name="menu_item_refresh_list">Refresh list</string>
+	<string name="menu_item_remove_favorite">Remove from favorites</string>
+	<string name="share_app">Share</string>
+	<string name="empty_list">No apps found! Check your internet connection and refresh.</string>
+	<string name="refresh">Refresh</string>
+
+</resources>
