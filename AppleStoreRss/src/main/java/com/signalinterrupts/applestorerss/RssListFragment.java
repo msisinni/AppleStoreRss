@@ -38,12 +38,7 @@ public class RssListFragment extends ListFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_rss_list, container, false);
-
-		ListView listView = (ListView) view.findViewById(android.R.id.list);
-		listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-
-		return view;
+		return inflater.inflate(R.layout.fragment_rss_list, container, false);
 	}
 
 	@Override

@@ -16,7 +16,7 @@ import java.util.UUID;
 
 public class ExpandedAppFragment extends Fragment {
 
-	public static final String EXTRA_APP_ID = "com.signalinterrupts.applestorerss.app_id";
+	public static final String EXTRA_APP_ID = "applestorerss.app_id";
 
 	private AppleApp mAppleApp;
 	private ExpandedCallbacks mExpandedCallbacks;
@@ -79,6 +79,12 @@ public class ExpandedAppFragment extends Fragment {
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		mExpandedCallbacks = (ExpandedCallbacks) activity;
+		/*
+		// Check if not null first?
+		Activity parent = getActivity().getParent();
+		super.onAttach(parent);
+		mExpandedCallbacks = (ExpandedCallbacks) parent;
+		 */
 	}
 
 	@Override

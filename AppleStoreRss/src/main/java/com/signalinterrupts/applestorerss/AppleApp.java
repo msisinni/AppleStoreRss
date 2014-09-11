@@ -5,7 +5,7 @@ import java.util.UUID;
 public class AppleApp {
 
 	private UUID mId;
-	private String mAppName;
+	private String mAppTitle;
 	private String mAppPrice;
 	private boolean mFavorite;
 	private String mSummary;
@@ -19,121 +19,116 @@ public class AppleApp {
 	private String mGenre;
 	private String mGenreLink;
 
-	public AppleApp() {
-		mId = UUID.randomUUID();
-	}
-
 	public UUID getId() {
 		return mId;
 	}
 
 	public String getAppTitle() {
-		return mAppName;
-	}
-
-	public void setAppName(String appName) {
-		mAppName = appName;
+		return mAppTitle;
 	}
 
 	public String getAppPrice() {
 		return mAppPrice;
 	}
 
-	public void setAppPrice(String appPrice) {
-		mAppPrice = appPrice;
-	}
-
 	public boolean isFavorite() {
 		return mFavorite;
 	}
 
-	public void setFavorite(boolean favorite) {
-		mFavorite = favorite;
-	}
-
-	// Below is stuff that is only displayed on the expanded view
-
 	public String getSummary() {
 		return mSummary;
-	}
-
-	public void setSummary(String summary) {
-		mSummary = summary;
 	}
 
 	public String getCopyright() {
 		return mCopyright;
 	}
 
-	public void setCopyright(String copyright) {
-		mCopyright = copyright;
-	}
-
 	public String getCompanyName() {
 		return mCompanyName;
-	}
-
-	public void setCompanyName(String companyName) {
-		mCompanyName = companyName;
 	}
 
 	public String getCompanyLink() {
 		return mCompanyLink;
 	}
 
-	public void setCompanyLink(String companyLink) {
-		mCompanyLink = companyLink;
-	}
-
 	public String getStoreLink() {
 		return mStoreLink;
-	}
-
-	public void setStoreLink(String storeLink) {
-		mStoreLink = storeLink;
 	}
 
 	public String getDate() {
 		return mDate;
 	}
 
-	public void setDate(String date) {
-		mDate = date;
-	}
-
 	public String getImageLinkSmall() {
 		return mImageLinkSmall;
-	}
-
-	public void setImageLinkSmall(String imageLinkSmall) {
-		mImageLinkSmall = imageLinkSmall;
 	}
 
 	public String getImageLinkBig() {
 		return mImageLinkBig;
 	}
 
-	public void setImageLinkBig(String imageLinkBig) {
-		mImageLinkBig = imageLinkBig;
-	}
-
 	public String getGenre() {
 		return mGenre;
-	}
-
-	public void setGenre(String genre) {
-		mGenre = genre;
 	}
 
 	public String getGenreLink() {
 		return mGenreLink;
 	}
 
-	public void setGenreLink(String genreLink) {
-		mGenreLink = genreLink;
+	public void setFavorite (boolean favorite) {
+		mFavorite = favorite;
 	}
 
+	public static class Builder {
+		private String bAppTitle;
+		private String bAppPrice;
+		private boolean bFavorite;
+		private String bSummary;
+		private String bCopyright;
+		private String bCompanyName;
+		private String bCompanyLink;
+		private String bStoreLink;
+		private String bDate;
+		private String bImageLinkSmall;
+		private String bImageLinkBig;
+		private String bGenre;
+		private String bGenreLink;
 
+		public Builder appTitle(String s) { bAppTitle = s; return this; }
+		public Builder appPrice(String s) { bAppPrice = s; return this; }
+		public Builder favorite(boolean b) { bFavorite = b; return this; }
+		public Builder summary(String s) { bSummary = s; return this; }
+		public Builder copyright(String s) { bCopyright = s; return this; }
+		public Builder companyName(String s) { bCompanyName = s; return this; }
+		public Builder companyLink(String s) { bCompanyLink = s; return this; }
+		public Builder storeLink(String s) { bStoreLink = s; return this; }
+		public Builder date(String s) { bDate = s; return this; }
+		public Builder imageLinkSmall(String s) { bImageLinkSmall = s; return this; }
+		public Builder imageLinkBig(String s) { bImageLinkBig = s; return this; }
+		public Builder genre(String s) { bGenre = s; return this; }
+		public Builder genreLink(String s) { bGenreLink = s; return this; }
+
+		public AppleApp build() {
+			return new AppleApp(this);
+		}
+	}
+
+	private AppleApp(Builder builder) {
+		mId = UUID.randomUUID();
+		mAppTitle = builder.bAppTitle;
+		mAppPrice = builder.bAppPrice;
+		mFavorite = builder.bFavorite;
+		mSummary = builder.bSummary;
+		mCopyright = builder.bCopyright;
+		mCompanyName = builder.bCompanyName;
+		mCompanyLink = builder.bCompanyLink;
+		mStoreLink = builder.bStoreLink;
+		mDate = builder.bDate;
+		mImageLinkSmall = builder.bImageLinkSmall;
+		mImageLinkBig = builder.bImageLinkBig;
+		mGenre = builder.bGenre;
+		mGenreLink = builder.bGenreLink;
+	}
 
 }
 
