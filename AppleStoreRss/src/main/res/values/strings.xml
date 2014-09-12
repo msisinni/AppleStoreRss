@@ -12,5 +12,6 @@
 	<string name="share_app">Share</string>
 	<string name="empty_list">No apps found! Check your internet connection and refresh.</string>
 	<string name="refresh">Refresh</string>
+	<string name="share_string">Share </string>
 
 </resources>

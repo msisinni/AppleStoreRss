@@ -165,7 +165,11 @@ public class ExpandedAppFragment extends Fragment {
 	}
 
 	private void shareAppFunction() {
-
+		Intent intent = new Intent(Intent.ACTION_SEND);
+		intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_string) + mAppleApp.getAppTitle());
+		intent.putExtra(Intent.EXTRA_TEXT, mAppleApp.getStoreLink());
+		intent.setType("text/plain");
+		startActivity(Intent.createChooser(intent, getString(R.string.share_string) + mAppleApp.getAppTitle()));
 	}
 
 	public void updateFavorite(UUID id) {

@@ -10,6 +10,7 @@
 		<activity android:name=".RssListActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
+				<action android:name="android.intent.action.SEND"/>
 
 				<category android:name="android.intent.category.LAUNCHER"/>
 			</intent-filter>
@@ -17,7 +18,7 @@
 		<activity android:name=".ExpandedAppActivity">
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
-				android:value=".RssListActivity" />
+				android:value=".RssListActivity"/>
 
 		</activity>
 	</application>
