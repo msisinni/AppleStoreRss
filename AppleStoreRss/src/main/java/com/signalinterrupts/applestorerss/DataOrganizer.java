@@ -24,10 +24,11 @@ public class DataOrganizer {
 					.copyright("Copy " + i)
 					.companyName("Company " + i)
 					.companyLink("https://itunes.apple.com/us/artist/supercell/id488106216?mt=8&uo=2")
+					.storeLink("https://itunes.apple.com/us/app/clash-of-clans/id529479190?mt=8&uo=2")
 					.date("August 2, 2012")
-					.imageLinkSmall("http://a260.phobos.apple.com/us/r30/Purple3/v4/57/f8/ef/57f8ef4e-a84c-e927-b3b6-4013fa75b0c7/mzl.qnshkfxv.53x53-50.png")
-					.imageLinkBig("http://a421.phobos.apple.com/us/r30/Purple3/v4/57/f8/ef/57f8ef4e-a84c-e927-b3b6-4013fa75b0c7/mzl.qnshkfxv.100x100-75.png")
-					.genre("Game")
+					.imageUrlSmall("http://a260.phobos.apple.com/us/r30/Purple3/v4/57/f8/ef/57f8ef4e-a84c-e927-b3b6-4013fa75b0c7/mzl.qnshkfxv.53x53-50.png")
+					.imageUrlBig("http://a421.phobos.apple.com/us/r30/Purple3/v4/57/f8/ef/57f8ef4e-a84c-e927-b3b6-4013fa75b0c7/mzl.qnshkfxv.100x100-75.png")
+					.genre("Games")
 					.genreLink("https://itunes.apple.com/us/genre/ios-games/id6014?mt=8&uo=2");
 			AppleApp appleApp = appBuilder.build();
 

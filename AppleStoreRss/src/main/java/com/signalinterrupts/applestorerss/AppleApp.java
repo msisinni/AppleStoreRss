@@ -14,8 +14,8 @@ public class AppleApp {
 	private String mCompanyLink;
 	private String mStoreLink;
 	private String mDate;
-	private String mImageLinkSmall;
-	private String mImageLinkBig;
+	private String mImageUrlSmall;
+	private String mImageUrlBig;
 	private String mGenre;
 	private String mGenreLink;
 
@@ -59,12 +59,12 @@ public class AppleApp {
 		return mDate;
 	}
 
-	public String getImageLinkSmall() {
-		return mImageLinkSmall;
+	public String getImageUrlSmall() {
+		return mImageUrlSmall;
 	}
 
-	public String getImageLinkBig() {
-		return mImageLinkBig;
+	public String getImageUrlBig() {
+		return mImageUrlBig;
 	}
 
 	public String getGenre() {
@@ -75,7 +75,7 @@ public class AppleApp {
 		return mGenreLink;
 	}
 
-	public void setFavorite (boolean favorite) {
+	public void setFavorite(boolean favorite) {
 		mFavorite = favorite;
 	}
 
@@ -89,11 +89,12 @@ public class AppleApp {
 		private String bCompanyLink;
 		private String bStoreLink;
 		private String bDate;
-		private String bImageLinkSmall;
-		private String bImageLinkBig;
+		private String bImageUrlSmall;
+		private String bImageUrlBig;
 		private String bGenre;
 		private String bGenreLink;
 
+		// @formatter:off
 		public Builder appTitle(String s) { bAppTitle = s; return this; }
 		public Builder appPrice(String s) { bAppPrice = s; return this; }
 		public Builder favorite(boolean b) { bFavorite = b; return this; }
@@ -103,10 +104,11 @@ public class AppleApp {
 		public Builder companyLink(String s) { bCompanyLink = s; return this; }
 		public Builder storeLink(String s) { bStoreLink = s; return this; }
 		public Builder date(String s) { bDate = s; return this; }
-		public Builder imageLinkSmall(String s) { bImageLinkSmall = s; return this; }
-		public Builder imageLinkBig(String s) { bImageLinkBig = s; return this; }
+		public Builder imageUrlSmall(String s) { bImageUrlSmall = s; return this; }
+		public Builder imageUrlBig(String s) { bImageUrlBig = s; return this; }
 		public Builder genre(String s) { bGenre = s; return this; }
 		public Builder genreLink(String s) { bGenreLink = s; return this; }
+		// @formatter:on
 
 		public AppleApp build() {
 			return new AppleApp(this);
@@ -124,8 +126,8 @@ public class AppleApp {
 		mCompanyLink = builder.bCompanyLink;
 		mStoreLink = builder.bStoreLink;
 		mDate = builder.bDate;
-		mImageLinkSmall = builder.bImageLinkSmall;
-		mImageLinkBig = builder.bImageLinkBig;
+		mImageUrlSmall = builder.bImageUrlSmall;
+		mImageUrlBig = builder.bImageUrlBig;
 		mGenre = builder.bGenre;
 		mGenreLink = builder.bGenreLink;
 	}

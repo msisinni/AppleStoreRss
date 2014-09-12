@@ -18,7 +18,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginRight="8dp"
-			android:src="@drawable/blank_app_large"
+			android:src="@drawable/loading_image_large"
 			tools:ignore="ContentDescription"/>
 
 		<TextView
@@ -104,6 +104,7 @@
 				tools:ignore="ContentDescription"/>
 
 			<TextView
+				android:id="@+id/expanded_app_shareTextView"
 				android:layout_below="@id/expanded_app_shareImageView"
 				android:layout_alignLeft="@id/expanded_app_shareImageView"
 				android:layout_width="wrap_content"
@@ -125,6 +126,7 @@
 			android:layout_height="wrap_content">
 
 			<TextView
+				android:id="@+id/expanded_app_summaryTextView"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:text="Introducing: Clan Wars! Crush enemy clans in clan versus clan battles. Lead your clan to victory! Clash of Clans is an epic combat strategy game. Build your village, train your troops and battle with millions of other players online!\n\nPLEASE NOTE! Clash of Clans is completely free to play, however some game items can also be purchased for real money. If you don't want to use this feature, please disable in-app purchases in your device's settings. Also, under our Terms of Service and Privacy Policy, you must be at least 13 years of age to play or download Clash of Clans.\n\nOver 1.5 Million 5 Star Reviews\n\n5/5  “This game is phenomenal”\n\n5/5  “If you were looking for a game to play that's fun and strategic this is better than any other game out there”\n\nClash of Clans is an addictive mixture of strategic planning and competitive fast-paced combats. Raise an army of Barbarians, War Wizards, Dragons and other mighty fighters. Join a clan of players and rise through the ranks, or create your own Clan to contest ownership of the Realm. Driving back the goblins is just the first step - your quest isn't over until your clan reigns supreme over all others!\n\n= FEATURES =\n- FREE TO PLAY\n- Build your village into a undefeatable fortress\n- Battle with players worldwide and take their Victory Points\n- Join together with other players to form the ultimate Clan\n- Fight against rival Clans in the epic Clan Wars\n- 15 unique units with multiple levels of upgrades\n- Defend your village with Cannons, Towers, Mortars, Bombs, Traps and Walls\n- Fight against the Goblin King in an epic campaign through the realm\n\nHaving any problems?  Any suggestions?  We would love to hear from you!  You can reach us at support at clashofclans.feedback@supercell.net \n\nNote: A network connection is required to play\n\nPrivacy Policy:\nhttp://www.supercell.net/privacy-policy/\n\nTerms of Service:\nhttp://www.supercell.net/terms-of-service/"
@@ -140,7 +142,7 @@
 
 			<TextView
 				android:layout_marginTop="5dp"
-				android:id="@+id/expanded_app_copywriteTextView"
+				android:id="@+id/expanded_app_copyrightTextView"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="Copywrite Company Name"
