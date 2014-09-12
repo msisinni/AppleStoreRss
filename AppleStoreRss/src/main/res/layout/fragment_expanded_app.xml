@@ -4,14 +4,14 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:layout_margin="16dp">
+              android:layout_height="match_parent">
 
 
 	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	                xmlns:tools="http://schemas.android.com/tools"
 	                android:layout_width="match_parent"
-	                android:layout_height="wrap_content">
+	                android:layout_height="wrap_content"
+	                android:layout_margin="12dp">
 
 		<ImageView
 			android:id="@+id/expanded_app_imageView"
@@ -45,7 +45,8 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:button="@android:drawable/btn_star"
-			android:layout_alignParentRight="true"/>
+			android:layout_alignParentRight="true"
+			android:layout_alignParentTop="true"/>
 
 		<Button
 			android:id="@+id/expanded_app_purchaseButton"
@@ -59,71 +60,71 @@
 
 	</RelativeLayout>
 
-	<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:orientation="horizontal"
-		android:layout_marginTop="20dp"
-		android:baselineAligned="false">
-
-		<RelativeLayout
-			android:layout_width="0dp"
-			android:layout_weight="1"
-			android:layout_height="wrap_content"
-			android:gravity="center">
-
-			<ImageView
-				android:id="@+id/expanded_app_genreImageView"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:src="@drawable/genre_default"
-				android:layout_alignParentLeft="true"
-				tools:ignore="ContentDescription"/>
-
-			<TextView
-				android:id="@+id/expanded_app_genreTextView"
-				android:layout_below="@id/expanded_app_genreImageView"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="Genre"
-				tools:ignore="HardcodedText"/>
-
-		</RelativeLayout>
-
-		<RelativeLayout
-			android:layout_width="0dp"
-			android:layout_weight="1"
-			android:layout_height="wrap_content"
-			android:gravity="center">
-
-			<ImageView
-				android:id="@+id/expanded_app_shareImageView"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:src="@drawable/share_app"
-				tools:ignore="ContentDescription"/>
-
-			<TextView
-				android:id="@+id/expanded_app_shareTextView"
-				android:layout_below="@id/expanded_app_shareImageView"
-				android:layout_alignLeft="@id/expanded_app_shareImageView"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="@string/share_app"/>
-		</RelativeLayout>
-
-	</LinearLayout>
-
 
 	<ScrollView
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_marginTop="20dp">
+		android:layout_margin="12dp">
 
 		<LinearLayout
 			android:orientation="vertical"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content">
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal"
+				android:layout_marginBottom="20dp"
+				android:baselineAligned="false">
+
+				<RelativeLayout
+					android:layout_width="0dp"
+					android:layout_weight="1"
+					android:layout_height="wrap_content"
+					android:gravity="center">
+
+					<ImageView
+						android:id="@+id/expanded_app_genreImageView"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:src="@drawable/genre_default"
+						android:layout_alignParentLeft="true"
+						tools:ignore="ContentDescription"/>
+
+					<TextView
+						android:id="@+id/expanded_app_genreTextView"
+						android:layout_below="@id/expanded_app_genreImageView"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="Genre"
+						tools:ignore="HardcodedText"/>
+
+				</RelativeLayout>
+
+				<RelativeLayout
+					android:layout_width="0dp"
+					android:layout_weight="1"
+					android:layout_height="wrap_content"
+					android:gravity="center">
+
+					<ImageView
+						android:id="@+id/expanded_app_shareImageView"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:src="@drawable/share_app"
+						tools:ignore="ContentDescription"/>
+
+					<TextView
+						android:id="@+id/expanded_app_shareTextView"
+						android:layout_below="@id/expanded_app_shareImageView"
+						android:layout_alignLeft="@id/expanded_app_shareImageView"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="@string/share_app"/>
+				</RelativeLayout>
+
+			</LinearLayout>
 
 			<TextView
 				android:id="@+id/expanded_app_summaryTextView"
