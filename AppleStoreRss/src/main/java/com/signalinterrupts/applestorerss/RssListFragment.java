@@ -1,9 +1,12 @@
 package com.signalinterrupts.applestorerss;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ListFragment;
+import android.support.v4.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -22,6 +26,8 @@ public class RssListFragment extends ListFragment {
 
 	private RssCallbacks mRssCallbacks;
 	private ArrayList<AppleApp> mAppleApps;
+	private ImageDownloader<ImageView> mImageThread;
+	private LruCache<String, Bitmap> mMemoryCache;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -38,6 +44,37 @@ public class RssListFragment extends ListFragment {
 			setListAdapter(adapter);
 		}
 
+		mImageThread = new ImageDownloader<ImageView>(new Handler());
+		mImageThread.setListener(new ImageDownloader.Listener<ImageView>() {
+			@Override
+			public void onImageDownloaded(ImageView imageView, String imageUrl, Bitmap bitmap) {
+				if (isVisible()) { // make sure the Fragment shows the ImageView in question;
+					imageView.setImageBitmap(bitmap);
+					addBitmapToCache(imageUrl, bitmap);
+				}
+			}
+		});
+		mImageThread.start();
+		mImageThread.getLooper();
+
+		final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024); // Memory in KB;
+		final int cacheSize = Math.min(maxMemory / 8, 350);
+		// 350 KB generously chosen as 25 images * ~12KB / image
+		mMemoryCache = new LruCache<>(cacheSize);
+
+	}
+
+	private void addBitmapToCache(String imageUrl, Bitmap bitmap) {
+		if (getBitmapFromCache(imageUrl) == null) {
+			mMemoryCache.put(imageUrl, bitmap);
+		}
+	}
+
+	private Bitmap getBitmapFromCache(String imageUrl) {
+		if (imageUrl == null) {
+			return null;
+		}
+		return mMemoryCache.get(imageUrl);
 	}
 
 	@Override
@@ -80,6 +117,18 @@ public class RssListFragment extends ListFragment {
 				return super.onOptionsItemSelected(item);
 		}
 
+	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		mImageThread.clearQueue();
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		mImageThread.quit();
 	}
 
 	/**
@@ -137,6 +186,14 @@ public class RssListFragment extends ListFragment {
 				}
 			});
 
+			ImageView appImageSmall = (ImageView) convertView.findViewById(R.id.list_item_app_picture);
+			final Bitmap bitmap = getBitmapFromCache(appleApp.getImageUrlSmall());
+			if (bitmap == null) { // download if not in cache;
+				appImageSmall.setImageResource(R.drawable.loading_image_small);
+				mImageThread.queueImage(appImageSmall, appleApp.getImageUrlSmall());
+			} else { // grab from cache;
+				appImageSmall.setImageBitmap(bitmap);
+			}
 			return convertView;
 		}
 	}
@@ -144,7 +201,7 @@ public class RssListFragment extends ListFragment {
 	private class DownloadAppsTask extends AsyncTask<Void, Void, ArrayList<AppleApp>> {
 		@Override
 		protected ArrayList<AppleApp> doInBackground(Void... params) {
-			return new DataPuller().fetchItems();
+			return new JsonDataPuller().fetchItems();
 		}
 
 		@Override

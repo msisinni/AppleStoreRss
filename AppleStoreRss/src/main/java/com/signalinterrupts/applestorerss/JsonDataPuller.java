@@ -13,7 +13,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class DataPuller {
+public class JsonDataPuller {
 	private static final String TAG = "DataPuller";
 
 	private static final String APPLE_RSS_URL = "http://ax.itunes.apple.com/WebObjects/MZStoreServices.woa/ws/RSS/topgrossingapplications/sf=143441/limit=25/json";
@@ -47,18 +47,18 @@ public class DataPuller {
 	}
 
 	public ArrayList<AppleApp> fetchItems() {
-		ArrayList<AppleApp> items = new ArrayList<>();
+		ArrayList<AppleApp> appArrayList = new ArrayList<>();
 		try {
 			String jsonString = getUrl(APPLE_RSS_URL);
 			Log.i(TAG, "Url:  " + APPLE_RSS_URL);
 			Log.i(TAG, "Received JSON:  " + jsonString);
 
-			items = parseApps(jsonString);
+			appArrayList = parseApps(jsonString);
 		} catch (IOException e) {
 			Log.e(TAG, "Failed to fetch items", e);
 		}
 
-		return items;
+		return appArrayList;
 	}
 
 	private ArrayList<AppleApp> parseApps(String jsonOutput) {
@@ -73,7 +73,6 @@ public class DataPuller {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-
 
 		return appleApps;
 	}
