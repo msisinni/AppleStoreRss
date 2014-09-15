@@ -24,7 +24,6 @@ public class ExpandedAppFragment extends Fragment {
 	private ImageView mAppImageView;
 	private CheckBox mFavoriteCheckBox;
 
-
 	public static ExpandedAppFragment newInstance(String appTitle) {
 		Bundle args = new Bundle();
 		args.putString(EXTRA_APP_TITLE, appTitle);
@@ -42,6 +41,7 @@ public class ExpandedAppFragment extends Fragment {
 		mAppleApp = DataOrganizer.get(getActivity()).getAppleApp(appTitle);
 		/////////////////////////////////////////////////////Check on this ///////////////////////////////// --v
 		setHasOptionsMenu(true);
+
 	}
 
 	@Override
@@ -53,6 +53,7 @@ public class ExpandedAppFragment extends Fragment {
 		final String genreLink = mAppleApp.getGenreLink();
 
 		mAppImageView = (ImageView) view.findViewById(R.id.expanded_app_imageView);
+		mExpandedCallbacks.loadBigImage(mAppleApp, mAppImageView);
 		// Update when downloading portion complete; //////////////////////////////////////////////////
 
 		// Could make one OnClickListener for all webpage openers, but too messy with switch based on view ids imo;
@@ -194,6 +195,7 @@ public class ExpandedAppFragment extends Fragment {
 	public interface ExpandedCallbacks {
 		void onAppUpdated(AppleApp appleApp);
 		void onExpandedAppUpdated(AppleApp appleApp);
+		void loadBigImage(AppleApp appleApp, ImageView imageView);
 	}
 
 

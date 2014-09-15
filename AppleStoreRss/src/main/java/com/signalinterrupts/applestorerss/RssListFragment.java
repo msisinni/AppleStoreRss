@@ -44,7 +44,7 @@ public class RssListFragment extends ListFragment {
 			setListAdapter(adapter);
 		}
 
-		mImageThread = new ImageDownloader<ImageView>(new Handler());
+		mImageThread = new ImageDownloader<>(new Handler());
 		mImageThread.setListener(new ImageDownloader.Listener<ImageView>() {
 			@Override
 			public void onImageDownloaded(ImageView imageView, String imageUrl, Bitmap bitmap) {

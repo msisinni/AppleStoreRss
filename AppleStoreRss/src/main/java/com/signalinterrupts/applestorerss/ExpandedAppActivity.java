@@ -1,17 +1,21 @@
 package com.signalinterrupts.applestorerss;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 
 public class ExpandedAppActivity extends ActionBarActivity implements ExpandedAppFragment.ExpandedCallbacks {
 
 	private ArrayList<AppleApp> mAppleApps;
+	private ImageDownloader<ImageView> mExpandedImageThread;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +38,8 @@ public class ExpandedAppActivity extends ActionBarActivity implements ExpandedAp
 			public int getCount() {
 				return mAppleApps.size();
 			}
+
+
 		});
 		mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 			@Override
@@ -53,6 +59,16 @@ public class ExpandedAppActivity extends ActionBarActivity implements ExpandedAp
 			}
 		});
 
+		mExpandedImageThread = new ImageDownloader<>(new Handler());
+		mExpandedImageThread.setListener(new ImageDownloader.Listener<ImageView>() {
+			@Override
+			public void onImageDownloaded(ImageView imageView, String imageUrl, Bitmap bitmap) {
+				imageView.setImageBitmap(bitmap);
+			}
+		});
+		mExpandedImageThread.start();
+		mExpandedImageThread.getLooper();
+
 		String appTitle = getIntent().getStringExtra(ExpandedAppFragment.EXTRA_APP_TITLE);
 		for (int i = 0; i < mAppleApps.size(); i++) {
 			if (mAppleApps.get(i).getAppTitle().equals(appTitle)) {
@@ -60,6 +76,14 @@ public class ExpandedAppActivity extends ActionBarActivity implements ExpandedAp
 				break;
 			}
 		}
+
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		mExpandedImageThread.clearQueue();
+		mExpandedImageThread.quit();
 	}
 
 	@Override
@@ -70,5 +94,10 @@ public class ExpandedAppActivity extends ActionBarActivity implements ExpandedAp
 	@Override
 	public void onExpandedAppUpdated(AppleApp appleApp) {
 		// method only useful in RssListActivity
+	}
+
+	@Override
+	public void loadBigImage(AppleApp appleApp, ImageView imageView) {
+		mExpandedImageThread.queueImage(imageView, appleApp.getImageUrlBig());
 	}
 }

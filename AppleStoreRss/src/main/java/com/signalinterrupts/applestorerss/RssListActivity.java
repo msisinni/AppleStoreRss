@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
+import android.widget.ImageView;
 
 
 public class RssListActivity extends ActionBarActivity implements RssListFragment.RssCallbacks, ExpandedAppFragment.ExpandedCallbacks {
@@ -67,6 +68,14 @@ public class RssListActivity extends ActionBarActivity implements RssListFragmen
 	@Override
 	public void onExpandedAppUpdated(AppleApp appleApp) {
 		coordinateCheckBoxes(appleApp);
+	}
+
+	@Override
+	public void loadBigImage(AppleApp appleApp, ImageView imageView) {
+		// Only used in ExpandedAppActivity;
+		if (findViewById(R.id.detailFragmentContainer) != null) {
+
+		}
 	}
 
 	private void coordinateCheckBoxes(AppleApp appleApp) {
