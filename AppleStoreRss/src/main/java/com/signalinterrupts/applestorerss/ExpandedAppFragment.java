@@ -15,8 +15,6 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.UUID;
-
 public class ExpandedAppFragment extends Fragment {
 
 	public static final String EXTRA_APP_TITLE = "applestorerss.app_title";

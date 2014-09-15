@@ -13,7 +13,8 @@
 		android:layout_height="wrap_content"
 		android:src="@drawable/loading_image_small"
 		android:layout_alignParentLeft="true"
-		android:layout_marginRight="4dp"/>
+		android:layout_marginRight="4dp"
+		tools:ignore="ContentDescription"/>
 
 	<TextView
 		android:id="@+id/list_item_app_name"

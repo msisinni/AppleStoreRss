@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class RssListFragment extends ListFragment {
 
 	private RssCallbacks mRssCallbacks;
-	ArrayList<AppleApp> mAppleApps;
+	private ArrayList<AppleApp> mAppleApps;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

@@ -3,7 +3,6 @@ package com.signalinterrupts.applestorerss;
 import android.content.Context;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class DataOrganizer {
 
@@ -13,6 +12,7 @@ public class DataOrganizer {
 
 	private DataOrganizer(Context context) {
 		mContext = context;
+		// loading here;
 	}
 
 	public static DataOrganizer get(Context context) {
