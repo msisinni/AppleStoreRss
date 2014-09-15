@@ -31,14 +31,14 @@ public class RssListActivity extends ActionBarActivity implements RssListFragmen
 	public void onAppSelected(AppleApp appleApp) {
 		if (findViewById(R.id.detailFragmentContainer) == null) {    // Start an instance of ExpandedAppActivity;
 			Intent intent = new Intent(this, ExpandedAppActivity.class);
-			intent.putExtra(ExpandedAppFragment.EXTRA_APP_ID, appleApp.getId());
+			intent.putExtra(ExpandedAppFragment.EXTRA_APP_TITLE, appleApp.getAppTitle());
 			startActivity(intent);
 		} else { // Replace the current ExpandedAppFragment on tablets;
 			FragmentManager fragmentManager = getSupportFragmentManager();
 			FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
 			Fragment oldDetail = fragmentManager.findFragmentById(R.id.detailFragmentContainer);
-			Fragment newDetail = ExpandedAppFragment.newInstance(appleApp.getId());
+			Fragment newDetail = ExpandedAppFragment.newInstance(appleApp.getAppTitle());
 
 			if (oldDetail != null) {
 				fragmentTransaction.remove(oldDetail);
@@ -53,9 +53,9 @@ public class RssListActivity extends ActionBarActivity implements RssListFragmen
 	public void onListItemUpdated(AppleApp appleApp) {
 		if (findViewById(R.id.detailFragmentContainer) != null) {
 			FragmentManager fragmentManager = getSupportFragmentManager();
-			ExpandedAppFragment fragment = (ExpandedAppFragment) fragmentManager.findFragmentById(R.id.detailFragmentContainer);
-			if (fragment != null) {
-				fragment.updateFavorite(appleApp.getId());
+			ExpandedAppFragment appFragment = (ExpandedAppFragment) fragmentManager.findFragmentById(R.id.detailFragmentContainer);
+			if (appFragment != null) {
+				appFragment.updateFavorite(appleApp.getAppTitle());
 			}
 		}
 	}
@@ -65,5 +65,18 @@ public class RssListActivity extends ActionBarActivity implements RssListFragmen
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		RssListFragment listFragment = (RssListFragment) fragmentManager.findFragmentById(R.id.fragmentContainer);
 		listFragment.updateUi();
+	}
+
+	@Override
+	public void onExpandedAppUpdated(AppleApp appleApp) {
+		coordinateCheckBoxes(appleApp);
+	}
+
+	private void coordinateCheckBoxes(AppleApp appleApp) {
+		if (findViewById(R.id.detailFragmentContainer) != null) {
+			FragmentManager fragmentManager = getSupportFragmentManager();
+			RssListFragment listFragment = (RssListFragment) fragmentManager.findFragmentById(R.id.fragmentContainer);
+			listFragment.updateUi();
+		}
 	}
 }

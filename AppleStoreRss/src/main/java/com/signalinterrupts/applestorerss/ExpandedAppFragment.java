@@ -19,20 +19,17 @@ import java.util.UUID;
 
 public class ExpandedAppFragment extends Fragment {
 
-	public static final String EXTRA_APP_ID = "applestorerss.app_id";
+	public static final String EXTRA_APP_TITLE = "applestorerss.app_title";
 
 	private AppleApp mAppleApp;
 	private ExpandedCallbacks mExpandedCallbacks;
 	private ImageView mAppImageView;
 	private CheckBox mFavoriteCheckBox;
-	private TextView mSummaryTextView;
-	private TextView mDateTextView;
-	private TextView mCopyrightTextView;
 
 
-	public static ExpandedAppFragment newInstance(UUID appId) {
+	public static ExpandedAppFragment newInstance(String appTitle) {
 		Bundle args = new Bundle();
-		args.putSerializable(EXTRA_APP_ID, appId);
+		args.putString(EXTRA_APP_TITLE, appTitle);
 
 		ExpandedAppFragment fragment = new ExpandedAppFragment();
 		fragment.setArguments(args);
@@ -43,8 +40,8 @@ public class ExpandedAppFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		UUID appId = (UUID) getArguments().getSerializable(EXTRA_APP_ID);
-		mAppleApp = DataOrganizer.get(getActivity()).getAppleApp(appId);
+		String appTitle = getArguments().getString(EXTRA_APP_TITLE);
+		mAppleApp = DataOrganizer.get(getActivity()).getAppleApp(appTitle);
 		/////////////////////////////////////////////////////Check on this ///////////////////////////////// --v
 		setHasOptionsMenu(true);
 	}
@@ -86,6 +83,7 @@ public class ExpandedAppFragment extends Fragment {
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				mAppleApp.setFavorite(isChecked);
 				mExpandedCallbacks.onAppUpdated(mAppleApp);
+				mExpandedCallbacks.onExpandedAppUpdated(mAppleApp);
 			}
 		});
 
@@ -133,14 +131,14 @@ public class ExpandedAppFragment extends Fragment {
 			}
 		});
 
-		mSummaryTextView = (TextView) view.findViewById(R.id.expanded_app_summaryTextView);
-		mSummaryTextView.setText(mAppleApp.getSummary());
+		TextView summaryTextView = (TextView) view.findViewById(R.id.expanded_app_summaryTextView);
+		summaryTextView.setText(mAppleApp.getSummary());
 
-		mDateTextView = (TextView) view.findViewById(R.id.expanded_app_dateTextView);
-		mDateTextView.setText(mAppleApp.getDate());
+		TextView dateTextView = (TextView) view.findViewById(R.id.expanded_app_dateTextView);
+		dateTextView.setText(mAppleApp.getDate());
 
-		mCopyrightTextView = (TextView) view.findViewById(R.id.expanded_app_copyrightTextView);
-		mCopyrightTextView.setText(mAppleApp.getCopyright());
+		TextView copyrightTextView = (TextView) view.findViewById(R.id.expanded_app_copyrightTextView);
+		copyrightTextView.setText(mAppleApp.getCopyright());
 
 		return view;
 	}
@@ -155,6 +153,8 @@ public class ExpandedAppFragment extends Fragment {
 		switch (genreName) {
 			case "Games":
 				return R.drawable.genre_games;
+			case "Sports":
+				return R.drawable.genre_sports;
 			case "Music":
 				return R.drawable.genre_music;
 			case "Social Networking":
@@ -172,9 +172,9 @@ public class ExpandedAppFragment extends Fragment {
 		startActivity(Intent.createChooser(intent, getString(R.string.share_string) + mAppleApp.getAppTitle()));
 	}
 
-	public void updateFavorite(UUID id) {
-		if (mAppleApp.getId().equals(id)) {
-			mFavoriteCheckBox.setChecked(!mFavoriteCheckBox.isChecked());
+	public void updateFavorite(String appTitle) {
+		if (mAppleApp.getAppTitle().equals(appTitle)) {
+			mFavoriteCheckBox.setChecked(mAppleApp.isFavorite());
 		}
 	}
 
@@ -195,6 +195,7 @@ public class ExpandedAppFragment extends Fragment {
 
 	public interface ExpandedCallbacks {
 		void onAppUpdated(AppleApp appleApp);
+		void onExpandedAppUpdated(AppleApp appleApp);
 	}
 
 

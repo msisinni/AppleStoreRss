@@ -28,7 +28,7 @@ public class ExpandedAppActivity extends ActionBarActivity implements ExpandedAp
 			@Override
 			public Fragment getItem(int i) {
 				AppleApp appleApp = mAppleApps.get(i);
-				return ExpandedAppFragment.newInstance(appleApp.getId());
+				return ExpandedAppFragment.newInstance(appleApp.getAppTitle());
 			}
 
 			@Override
@@ -54,9 +54,9 @@ public class ExpandedAppActivity extends ActionBarActivity implements ExpandedAp
 			}
 		});
 
-		UUID appId = (UUID) getIntent().getSerializableExtra(ExpandedAppFragment.EXTRA_APP_ID);
+		String appTitle = getIntent().getStringExtra(ExpandedAppFragment.EXTRA_APP_TITLE);
 		for (int i = 0; i < mAppleApps.size(); i++) {
-			if (mAppleApps.get(i).getId().equals(appId)) {
+			if (mAppleApps.get(i).getAppTitle().equals(appTitle)) {
 				mViewPager.setCurrentItem(i);
 				break;
 			}
@@ -65,6 +65,11 @@ public class ExpandedAppActivity extends ActionBarActivity implements ExpandedAp
 
 	@Override
 	public void onAppUpdated(AppleApp appleApp) {
+		// method only useful in RssListActivity
+	}
+
+	@Override
+	public void onExpandedAppUpdated(AppleApp appleApp) {
 		// method only useful in RssListActivity
 	}
 }

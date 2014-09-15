@@ -1,6 +1,7 @@
 package com.signalinterrupts.applestorerss;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
@@ -20,19 +21,22 @@ import java.util.ArrayList;
 public class RssListFragment extends ListFragment {
 
 	private RssCallbacks mRssCallbacks;
+	ArrayList<AppleApp> mAppleApps;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// Check if necessary --v
+
 		getActivity().setTitle(getString(R.string.list_fragment_title));
 
-		ArrayList<AppleApp> mAppleApps = DataOrganizer.get(getActivity()).getAppleApps();
-
-		RssAdapter adapter = new RssAdapter(mAppleApps);
-		setListAdapter(adapter);
-
 		setRetainInstance(true);
+		mAppleApps = DataOrganizer.get(getActivity()).getAppleApps();
+		if (mAppleApps == null) {
+			new DownloadAppsTask().execute();
+		} else {
+			RssAdapter adapter = new RssAdapter(mAppleApps);
+			setListAdapter(adapter);
+		}
 
 	}
 
@@ -50,7 +54,9 @@ public class RssListFragment extends ListFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		((RssAdapter) getListAdapter()).notifyDataSetChanged();
+		if (mAppleApps != null) {
+			((RssAdapter) getListAdapter()).notifyDataSetChanged();
+		}
 	}
 
 	@Override
@@ -98,6 +104,7 @@ public class RssListFragment extends ListFragment {
 
 	public interface RssCallbacks {
 		void onAppSelected(AppleApp appleApp);
+
 		void onListItemUpdated(AppleApp appleApp);
 	}
 
@@ -131,6 +138,21 @@ public class RssListFragment extends ListFragment {
 			});
 
 			return convertView;
+		}
+	}
+
+	private class DownloadAppsTask extends AsyncTask<Void, Void, ArrayList<AppleApp>> {
+		@Override
+		protected ArrayList<AppleApp> doInBackground(Void... params) {
+			return new DataPuller().fetchItems();
+		}
+
+		@Override
+		protected void onPostExecute(ArrayList<AppleApp> appleApps) {
+			mAppleApps = appleApps;
+			RssAdapter adapter = new RssAdapter(mAppleApps);
+			setListAdapter(adapter);
+			DataOrganizer.get(getActivity()).setAppleApps(mAppleApps);
 		}
 	}
 }

@@ -1,10 +1,13 @@
 package com.signalinterrupts.applestorerss;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.UUID;
 
 public class AppleApp {
 
-	private UUID mId;
 	private String mAppTitle;
 	private String mAppPrice;
 	private boolean mFavorite;
@@ -18,10 +21,6 @@ public class AppleApp {
 	private String mImageUrlBig;
 	private String mGenre;
 	private String mGenreLink;
-
-	public UUID getId() {
-		return mId;
-	}
 
 	public String getAppTitle() {
 		return mAppTitle;
@@ -94,8 +93,11 @@ public class AppleApp {
 		private String bGenre;
 		private String bGenreLink;
 
+		public Builder(String appTitle) {
+			bAppTitle = appTitle;
+		}
+
 		// @formatter:off
-		public Builder appTitle(String s) { bAppTitle = s; return this; }
 		public Builder appPrice(String s) { bAppPrice = s; return this; }
 		public Builder favorite(boolean b) { bFavorite = b; return this; }
 		public Builder summary(String s) { bSummary = s; return this; }
@@ -116,7 +118,6 @@ public class AppleApp {
 	}
 
 	private AppleApp(Builder builder) {
-		mId = UUID.randomUUID();
 		mAppTitle = builder.bAppTitle;
 		mAppPrice = builder.bAppPrice;
 		mFavorite = builder.bFavorite;
@@ -130,6 +131,48 @@ public class AppleApp {
 		mImageUrlBig = builder.bImageUrlBig;
 		mGenre = builder.bGenre;
 		mGenreLink = builder.bGenreLink;
+	}
+
+	public AppleApp(JSONObject jsonObject) throws JSONException {
+		final String label = "label";
+		final String attributes = "attributes";
+
+		JSONObject jsonElement;
+		jsonElement = jsonObject.getJSONObject("im:name");
+		mAppTitle = jsonElement.getString(label);
+
+		JSONArray jsonArray = jsonObject.getJSONArray("im:image");
+		jsonElement = (JSONObject) jsonArray.get(0);
+		mImageUrlSmall = jsonElement.getString(label);
+
+		jsonElement = (JSONObject) jsonArray.get(2);
+		mImageUrlBig = jsonElement.getString(label);
+
+		jsonElement = jsonObject.getJSONObject("summary");
+		mSummary = jsonElement.getString(label);
+
+		jsonElement = jsonObject.getJSONObject("im:price");
+		mAppPrice = jsonElement.getString(label);
+
+		jsonElement = jsonObject.getJSONObject("rights");
+		mCopyright = jsonElement.getString(label);
+
+		jsonElement = jsonObject.getJSONObject("id");
+		mStoreLink = jsonElement.getString(label);
+
+		jsonElement = jsonObject.getJSONObject("im:artist");
+		mCompanyName = jsonElement.getString(label);
+		jsonElement = jsonElement.getJSONObject(attributes);
+		mCompanyLink = jsonElement.getString("href");
+
+		jsonElement = jsonObject.getJSONObject("category");
+		jsonElement = jsonElement.getJSONObject(attributes);
+		mGenre = jsonElement.getString("term");
+		mGenreLink = jsonElement.getString("scheme");
+
+		jsonElement = jsonObject.getJSONObject("im:releaseDate");
+		jsonElement = jsonElement.getJSONObject(attributes);
+		mDate = jsonElement.getString(label);
 	}
 
 }
