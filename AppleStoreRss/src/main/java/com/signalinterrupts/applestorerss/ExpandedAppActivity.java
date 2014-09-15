@@ -15,7 +15,6 @@ import java.util.ArrayList;
 public class ExpandedAppActivity extends ActionBarActivity implements ExpandedAppFragment.ExpandedCallbacks {
 
 	private ArrayList<AppleApp> mAppleApps;
-	private ImageDownloader<ImageView> mExpandedImageThread;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,16 +58,6 @@ public class ExpandedAppActivity extends ActionBarActivity implements ExpandedAp
 			}
 		});
 
-		mExpandedImageThread = new ImageDownloader<>(new Handler());
-		mExpandedImageThread.setListener(new ImageDownloader.Listener<ImageView>() {
-			@Override
-			public void onImageDownloaded(ImageView imageView, String imageUrl, Bitmap bitmap) {
-				imageView.setImageBitmap(bitmap);
-			}
-		});
-		mExpandedImageThread.start();
-		mExpandedImageThread.getLooper();
-
 		String appTitle = getIntent().getStringExtra(ExpandedAppFragment.EXTRA_APP_TITLE);
 		for (int i = 0; i < mAppleApps.size(); i++) {
 			if (mAppleApps.get(i).getAppTitle().equals(appTitle)) {
@@ -77,13 +66,6 @@ public class ExpandedAppActivity extends ActionBarActivity implements ExpandedAp
 			}
 		}
 
-	}
-
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		mExpandedImageThread.clearQueue();
-		mExpandedImageThread.quit();
 	}
 
 	@Override
@@ -96,8 +78,4 @@ public class ExpandedAppActivity extends ActionBarActivity implements ExpandedAp
 		// method only useful in RssListActivity
 	}
 
-	@Override
-	public void loadBigImage(AppleApp appleApp, ImageView imageView) {
-		mExpandedImageThread.queueImage(imageView, appleApp.getImageUrlBig());
-	}
 }

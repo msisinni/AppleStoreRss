@@ -53,7 +53,6 @@ public class ExpandedAppFragment extends Fragment {
 		final String genreLink = mAppleApp.getGenreLink();
 
 		mAppImageView = (ImageView) view.findViewById(R.id.expanded_app_imageView);
-		mExpandedCallbacks.loadBigImage(mAppleApp, mAppImageView);
 		// Update when downloading portion complete; //////////////////////////////////////////////////
 
 		// Could make one OnClickListener for all webpage openers, but too messy with switch based on view ids imo;
@@ -177,8 +176,8 @@ public class ExpandedAppFragment extends Fragment {
 		}
 	}
 
-	/**
-	 * Required interface for hosting activities;
+	/*	 * Required interface for hosting activities;
+
 	 */
 	@Override
 	public void onAttach(Activity activity) {
@@ -194,8 +193,8 @@ public class ExpandedAppFragment extends Fragment {
 
 	public interface ExpandedCallbacks {
 		void onAppUpdated(AppleApp appleApp);
+
 		void onExpandedAppUpdated(AppleApp appleApp);
-		void loadBigImage(AppleApp appleApp, ImageView imageView);
 	}
 
 

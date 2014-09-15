@@ -70,14 +70,6 @@ public class RssListActivity extends ActionBarActivity implements RssListFragmen
 		coordinateCheckBoxes(appleApp);
 	}
 
-	@Override
-	public void loadBigImage(AppleApp appleApp, ImageView imageView) {
-		// Only used in ExpandedAppActivity;
-		if (findViewById(R.id.detailFragmentContainer) != null) {
-
-		}
-	}
-
 	private void coordinateCheckBoxes(AppleApp appleApp) {
 		if (findViewById(R.id.detailFragmentContainer) != null) {
 			FragmentManager fragmentManager = getSupportFragmentManager();
