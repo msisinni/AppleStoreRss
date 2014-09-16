@@ -7,11 +7,14 @@
               android:layout_height="match_parent">
 
 
-	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	                xmlns:tools="http://schemas.android.com/tools"
-	                android:layout_width="match_parent"
-	                android:layout_height="wrap_content"
-	                android:layout_margin="12dp">
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	              xmlns:tools="http://schemas.android.com/tools"
+	              android:layout_width="match_parent"
+	              android:layout_height="wrap_content"
+	              android:orientation="horizontal"
+	              android:layout_marginLeft="12dp"
+	              android:layout_marginRight="12dp"
+	              android:layout_marginTop="12dp">
 
 		<ImageView
 			android:id="@+id/expanded_app_imageView"
@@ -21,44 +24,37 @@
 			android:src="@drawable/loading_image_large"
 			tools:ignore="ContentDescription"/>
 
-		<TextView
-			android:id="@+id/expanded_app_titleTextView"
-			android:layout_width="wrap_content"
+		<LinearLayout
+			android:layout_width="0dp"
+			android:layout_weight="1"
 			android:layout_height="wrap_content"
-			android:textSize="20sp"
-			android:layout_toRightOf="@id/expanded_app_imageView"
-			android:text="Blank App Title"
-			tools:ignore="HardcodedText"/>
+			android:orientation="vertical">
 
-		<TextView
-			android:id="@+id/expanded_app_companyNameTextView"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_below="@id/expanded_app_titleTextView"
-			android:layout_alignLeft="@id/expanded_app_titleTextView"
-			android:layout_marginTop="2dp"
-			android:text="Company Name"
-			tools:ignore="HardcodedText"/>
+			<TextView
+				android:id="@+id/expanded_app_titleTextView"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textSize="20sp"
+				android:text="Blank App Title"
+				tools:ignore="HardcodedText"/>
+
+			<TextView
+				android:id="@+id/expanded_app_companyNameTextView"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="2dp"
+				android:text="Company Name"
+				tools:ignore="HardcodedText"/>
+
+		</LinearLayout>
 
 		<CheckBox
 			android:id="@+id/expanded_app_favoriteCheckBox"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:button="@android:drawable/btn_star"
-			android:layout_alignParentRight="true"
-			android:layout_alignParentTop="true"/>
+			android:button="@android:drawable/btn_star"/>
 
-		<Button
-			android:id="@+id/expanded_app_purchaseButton"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_alignBottom="@id/expanded_app_imageView"
-			android:layout_alignRight="@id/expanded_app_favoriteCheckBox"
-			android:text="$2.99"
-			android:background="@drawable/button_shape_price"
-			tools:ignore="HardcodedText"/>
-
-	</RelativeLayout>
+	</LinearLayout>
 
 
 	<ScrollView
@@ -75,28 +71,29 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:orientation="horizontal"
+				android:layout_marginTop="10dp"
 				android:layout_marginBottom="20dp"
 				android:baselineAligned="false">
 
 				<RelativeLayout
 					android:layout_width="0dp"
-					android:layout_weight="1"
-					android:layout_height="wrap_content"
-					android:gravity="center">
+					android:layout_weight="2"
+					android:layout_height="wrap_content">
 
 					<ImageView
 						android:id="@+id/expanded_app_genreImageView"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:src="@drawable/genre_default"
-						android:layout_alignParentLeft="true"
-						tools:ignore="ContentDescription"/>
+						tools:ignore="ContentDescription"
+						android:layout_centerHorizontal="true"/>
 
 					<TextView
 						android:id="@+id/expanded_app_genreTextView"
 						android:layout_below="@id/expanded_app_genreImageView"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
+						android:layout_centerHorizontal="true"
 						android:text="Genre"
 						tools:ignore="HardcodedText"/>
 
@@ -104,25 +101,40 @@
 
 				<RelativeLayout
 					android:layout_width="0dp"
-					android:layout_weight="1"
-					android:layout_height="wrap_content"
-					android:gravity="center">
+					android:layout_weight="2"
+					android:layout_height="wrap_content">
 
 					<ImageView
 						android:id="@+id/expanded_app_shareImageView"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
+						android:layout_centerHorizontal="true"
 						android:src="@drawable/share_app"
 						tools:ignore="ContentDescription"/>
 
 					<TextView
 						android:id="@+id/expanded_app_shareTextView"
 						android:layout_below="@id/expanded_app_shareImageView"
-						android:layout_alignLeft="@id/expanded_app_shareImageView"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
+						android:layout_centerHorizontal="true"
 						android:text="@string/share_app"/>
 				</RelativeLayout>
+
+				<FrameLayout
+					android:layout_width="0dp"
+					android:layout_weight="1"
+					android:layout_height="wrap_content">
+
+					<Button
+						android:id="@+id/expanded_app_purchaseButton"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="$2.99"
+						android:background="@drawable/button_shape_price"
+						tools:ignore="HardcodedText"/>
+				</FrameLayout>
+
 
 			</LinearLayout>
 
