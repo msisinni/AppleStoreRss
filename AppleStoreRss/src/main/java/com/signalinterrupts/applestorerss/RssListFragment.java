@@ -25,7 +25,7 @@ import java.util.ArrayList;
 public class RssListFragment extends ListFragment {
 
 	private RssCallbacks mRssCallbacks;
-	private ArrayList<AppleApp> mAppleApps;
+	private ArrayList<AppleApp> mAppleAppList;
 	private ImageDownloader<ImageView> mImageThread;
 	private LruCache<String, Bitmap> mMemoryCache;
 
@@ -36,11 +36,11 @@ public class RssListFragment extends ListFragment {
 		getActivity().setTitle(getString(R.string.list_fragment_title));
 
 		setRetainInstance(true);
-		mAppleApps = DataOrganizer.get(getActivity()).getAppleApps();
-		if (mAppleApps == null) {
+		mAppleAppList = DataOrganizer.get(getActivity()).getAppleAppList();
+		if (mAppleAppList == null) {
 			new DownloadAppsTask().execute();
 		} else {
-			RssAdapter adapter = new RssAdapter(mAppleApps);
+			RssAdapter adapter = new RssAdapter(mAppleAppList);
 			setListAdapter(adapter);
 		}
 
@@ -91,7 +91,7 @@ public class RssListFragment extends ListFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (mAppleApps != null) {
+		if (mAppleAppList != null) {
 			((RssAdapter) getListAdapter()).notifyDataSetChanged();
 		}
 	}
@@ -158,8 +158,8 @@ public class RssListFragment extends ListFragment {
 	}
 
 	private class RssAdapter extends ArrayAdapter<AppleApp> {
-		public RssAdapter(ArrayList<AppleApp> appList) {
-			super(getActivity(), 0, appList);
+		public RssAdapter(ArrayList<AppleApp> appleAppList) {
+			super(getActivity(), 0, appleAppList);
 		}
 
 		@Override
@@ -206,10 +206,10 @@ public class RssListFragment extends ListFragment {
 
 		@Override
 		protected void onPostExecute(ArrayList<AppleApp> appleApps) {
-			mAppleApps = appleApps;
-			RssAdapter adapter = new RssAdapter(mAppleApps);
+			mAppleAppList = appleApps;
+			RssAdapter adapter = new RssAdapter(mAppleAppList);
 			setListAdapter(adapter);
-			DataOrganizer.get(getActivity()).setAppleApps(mAppleApps);
+			DataOrganizer.get(getActivity()).setAppleAppList(mAppleAppList);
 		}
 	}
 }

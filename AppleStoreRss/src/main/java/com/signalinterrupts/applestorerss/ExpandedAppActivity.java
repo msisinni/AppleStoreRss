@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class ExpandedAppActivity extends ActionBarActivity implements ExpandedAppFragment.ExpandedCallbacks {
 
-	private ArrayList<AppleApp> mAppleApps;
+	private ArrayList<AppleApp> mAppleAppList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -20,19 +20,19 @@ public class ExpandedAppActivity extends ActionBarActivity implements ExpandedAp
 		mViewPager.setId(R.id.viewPager);
 		setContentView(mViewPager);
 
-		mAppleApps = DataOrganizer.get(this).getAppleApps();
+		mAppleAppList = DataOrganizer.get(this).getAppleAppList();
 
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
 			@Override
 			public Fragment getItem(int i) {
-				AppleApp appleApp = mAppleApps.get(i);
+				AppleApp appleApp = mAppleAppList.get(i);
 				return ExpandedAppFragment.newInstance(appleApp.getAppTitle());
 			}
 
 			@Override
 			public int getCount() {
-				return mAppleApps.size();
+				return mAppleAppList.size();
 			}
 
 
@@ -44,7 +44,7 @@ public class ExpandedAppActivity extends ActionBarActivity implements ExpandedAp
 
 			@Override
 			public void onPageSelected(int i) {
-				AppleApp appleApp = mAppleApps.get(i);
+				AppleApp appleApp = mAppleAppList.get(i);
 				if (appleApp.getAppTitle() != null) {
 					setTitle(appleApp.getAppTitle());
 				}
@@ -56,8 +56,8 @@ public class ExpandedAppActivity extends ActionBarActivity implements ExpandedAp
 		});
 
 		String appTitle = getIntent().getStringExtra(ExpandedAppFragment.EXTRA_APP_TITLE);
-		for (int i = 0; i < mAppleApps.size(); i++) {
-			if (mAppleApps.get(i).getAppTitle().equals(appTitle)) {
+		for (int i = 0; i < mAppleAppList.size(); i++) {
+			if (mAppleAppList.get(i).getAppTitle().equals(appTitle)) {
 				mViewPager.setCurrentItem(i);
 				break;
 			}

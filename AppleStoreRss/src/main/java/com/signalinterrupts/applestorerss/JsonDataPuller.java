@@ -62,19 +62,20 @@ public class JsonDataPuller {
 	}
 
 	private ArrayList<AppleApp> parseApps(String jsonOutput) {
-		ArrayList<AppleApp> appleApps = new ArrayList<>(25); // update number if link changed
+		ArrayList<AppleApp> appleAppList = new ArrayList<>(25); // update number if link changed
+		// could parse number from JSON url, but that might get messy if the link is changing anyway;
 		try {
 			JSONObject jsonObject = new JSONObject(jsonOutput);
-			JSONObject appObject = jsonObject.getJSONObject("feed");
-			JSONArray jsonArray = appObject.getJSONArray("entry");
+			jsonObject = jsonObject.getJSONObject("feed");
+			JSONArray jsonArray = jsonObject.getJSONArray("entry");
 			for (int i = 0; i < jsonArray.length(); i++) {
-				appleApps.add(new AppleApp(jsonArray.getJSONObject(i)));
+				appleAppList.add(new AppleApp(jsonArray.getJSONObject(i)));
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 
-		return appleApps;
+		return appleAppList;
 	}
 
 }
