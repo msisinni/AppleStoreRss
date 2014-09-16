@@ -2,10 +2,15 @@ package com.signalinterrupts.applestorerss;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +20,10 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ExpandedAppFragment extends Fragment {
+import java.io.IOException;
 
+public class ExpandedAppFragment extends Fragment {
+	private static final String TAG = "ExpandedAppFragment";
 	public static final String EXTRA_APP_TITLE = "applestorerss.app_title";
 
 	private AppleApp mAppleApp;
@@ -41,6 +48,7 @@ public class ExpandedAppFragment extends Fragment {
 		mAppleApp = DataOrganizer.get(getActivity()).getAppleApp(appTitle);
 		/////////////////////////////////////////////////////Check on this ///////////////////////////////// --v
 		setHasOptionsMenu(true);
+		new DownloadImagesTask().execute();
 
 	}
 
@@ -53,6 +61,7 @@ public class ExpandedAppFragment extends Fragment {
 		final String genreLink = mAppleApp.getGenreLink();
 
 		mAppImageView = (ImageView) view.findViewById(R.id.expanded_app_imageView);
+		mAppImageView.setImageResource(R.drawable.loading_image_large);
 		// Update when downloading portion complete; //////////////////////////////////////////////////
 
 		// Could make one OnClickListener for all webpage openers, but too messy with switch based on view ids imo;
@@ -176,8 +185,31 @@ public class ExpandedAppFragment extends Fragment {
 		}
 	}
 
-	/*	 * Required interface for hosting activities;
+	private class DownloadImagesTask extends AsyncTask<Void, Void, Bitmap> {
 
+		@Override
+		protected Bitmap doInBackground(Void... params) {
+			try {
+				byte[] bitmapBytes = new JsonDataPuller().getUrlBytes(mAppleApp.getImageUrlBig());
+				Bitmap bitmap = BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length);
+				bitmap.setDensity(DisplayMetrics.DENSITY_HIGH);
+				return bitmap;
+			} catch (IOException e) {
+				Log.e(TAG, "Error downloading image", e);
+				return null;
+			}
+		}
+
+		@Override
+		protected void onPostExecute(Bitmap bitmap) {
+			if (isVisible()) {
+				mAppImageView.setImageBitmap(bitmap);
+			}
+		}
+	}
+
+	/**
+	 * Required interface for hosting activities;
 	 */
 	@Override
 	public void onAttach(Activity activity) {
@@ -196,6 +228,5 @@ public class ExpandedAppFragment extends Fragment {
 
 		void onExpandedAppUpdated(AppleApp appleApp);
 	}
-
 
 }

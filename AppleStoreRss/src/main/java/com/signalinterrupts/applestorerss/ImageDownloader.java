@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
 import java.io.IOException;
@@ -59,6 +60,7 @@ public class ImageDownloader<Token> extends HandlerThread {
 
 			byte[] bitmapBytes = new JsonDataPuller().getUrlBytes(imageUrl);
 			final Bitmap bitmap = BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length);
+			bitmap.setDensity(DisplayMetrics.DENSITY_HIGH);
 			Log.i(TAG, "Bitmap created");
 
 			mResponseHandler.post(new Runnable() {
