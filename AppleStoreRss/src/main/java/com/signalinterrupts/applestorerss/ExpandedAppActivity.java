@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 public class ExpandedAppActivity extends ActionBarActivity implements ExpandedAppFragment.ExpandedCallbacks {
 
+	protected static final String JSON_OR_FAVORITE = "JorF";
 	private ArrayList<AppleApp> mAppleAppList;
 
 	@Override
@@ -20,7 +21,12 @@ public class ExpandedAppActivity extends ActionBarActivity implements ExpandedAp
 		mViewPager.setId(R.id.viewPager);
 		setContentView(mViewPager);
 
-		mAppleAppList = DataOrganizer.get(this).getAppleAppList();
+		if (getIntent().getBooleanExtra(JSON_OR_FAVORITE, true)) {
+			mAppleAppList = DataOrganizer.get(this).getAppleAppList();
+		} else {
+			mAppleAppList = DataOrganizer.get(this).getFavoriteAppList();
+		}
+
 
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {

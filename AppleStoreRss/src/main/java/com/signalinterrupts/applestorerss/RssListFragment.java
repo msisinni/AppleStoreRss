@@ -205,11 +205,11 @@ public class RssListFragment extends ListFragment {
 		}
 
 		@Override
-		protected void onPostExecute(ArrayList<AppleApp> appleApps) {
-			mAppleAppList = appleApps;
+		protected void onPostExecute(ArrayList<AppleApp> appleAppList) {
+			DataOrganizer.get(getActivity()).setAppleAppList(appleAppList);
+			mAppleAppList = DataOrganizer.get(getActivity()).getAppleAppList();
 			RssAdapter adapter = new RssAdapter(mAppleAppList);
 			setListAdapter(adapter);
-			DataOrganizer.get(getActivity()).setAppleAppList(mAppleAppList);
 		}
 	}
 }

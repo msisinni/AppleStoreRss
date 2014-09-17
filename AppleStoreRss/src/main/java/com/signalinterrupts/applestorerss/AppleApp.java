@@ -173,6 +173,26 @@ public class AppleApp {
 		mDate = jsonElement.getString(label);
 	}
 
+	@Override
+	public boolean equals(Object other) {
+		if (other == null || other.getClass() != getClass()) {
+			return false;
+		}
+		AppleApp otherAppleApp = (AppleApp) other;
+		return mAppTitle.equals(otherAppleApp.getAppTitle());
+	}
+
+	@Override
+	public int hashCode() {
+		int hash = 17;
+		hash = 31*hash + mAppTitle.hashCode();
+		return hash;
+	}
+
+	@Override
+	public String toString() {
+		return mAppTitle;
+	}
 }
 
 

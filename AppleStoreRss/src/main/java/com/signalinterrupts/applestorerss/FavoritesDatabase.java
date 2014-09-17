@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class FavoritesDatabase extends SQLiteOpenHelper {
@@ -36,7 +36,8 @@ public class FavoritesDatabase extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		String sqlCreate = String.format("create table %s (%s integer primary key, %s text, %s text, %s text, %s text, %s text, %s text, %s text, %s text, %s text, %s text, %s text, %s text",
+		String sqlCreate = String.format("create table %s (%s integer primary key, %s text, %s text, %s text, %s text, %s text, %s text, %s text, %s text, %s text, %s text, %s text, " +
+				                                 "%s text)",
 				                                TABLE_NAME, ROW_ID, TITLE, PRICE, SUMMARY, COPYRIGHT, COMPANY_NAME, COMPANY_LINK, STORE_LINK, DATE, IMAGE_SMALL, IMAGE_BIG, GENRE, GENRE_LINK);
 		db.execSQL(sqlCreate);
 	}
@@ -53,6 +54,7 @@ public class FavoritesDatabase extends SQLiteOpenHelper {
 			int i = 0;
 			for (AppleApp appleApp : favoriteAppList) {
 				ContentValues values = new ContentValues();
+
 				values.put(ROW_ID, i);
 				values.put(TITLE, appleApp.getAppTitle());
 				values.put(PRICE, appleApp.getAppPrice());
@@ -74,12 +76,14 @@ public class FavoritesDatabase extends SQLiteOpenHelper {
 
 	}
 
-	protected List<AppleApp> loadFavorites() {
-		List<AppleApp> favoriteAppList = new ArrayList<>();
+	protected HashSet<AppleApp> loadFavorites() {
+		HashSet<AppleApp> favoriteAppSet = new HashSet<>();
 
 		SQLiteDatabase database = getReadableDatabase();
 
 		String sqlExtract = String.format("Select * from %s order by %s", TABLE_NAME, ROW_ID);
+		//String sqlExtract = String.format("Select %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s from %s order by %s", TITLE, PRICE, SUMMARY, COPYRIGHT, COMPANY_NAME, COMPANY_LINK, STORE_LINK,
+		//		                                 DATE, IMAGE_SMALL, IMAGE_BIG, GENRE, GENRE_LINK, TABLE_NAME, ROW_ID);
 
 		Cursor cursor = database.rawQuery(sqlExtract, null);
 
@@ -99,11 +103,11 @@ public class FavoritesDatabase extends SQLiteOpenHelper {
 
 			AppleApp appleApp = builder.build();
 
-			favoriteAppList.add(appleApp);
+			favoriteAppSet.add(appleApp);
 		}
 
 		database.close();
 
-		return favoriteAppList;
+		return favoriteAppSet;
 	}
 }

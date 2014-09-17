@@ -62,7 +62,7 @@ public class JsonDataPuller {
 	}
 
 	private ArrayList<AppleApp> parseApps(String jsonOutput) {
-		ArrayList<AppleApp> appleAppList = new ArrayList<>(25); // update number if link changed
+		ArrayList<AppleApp> appleAppList = new ArrayList<>(25); // update number if link changed;
 		// could parse number from JSON url, but that might get messy if the link is changing anyway;
 		try {
 			JSONObject jsonObject = new JSONObject(jsonOutput);
