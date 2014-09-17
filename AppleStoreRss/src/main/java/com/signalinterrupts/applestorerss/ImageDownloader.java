@@ -37,7 +37,6 @@ public class ImageDownloader<Token> extends HandlerThread {
 				if (msg.what == MESSAGE_DOWNLOAD) {
 					@SuppressWarnings("unchecked")
 					Token token = (Token) msg.obj;
-					Log.i(TAG, "Got a request for url:  " + requestMap.get(token));
 					handleRequest(token);
 				}
 			}
@@ -45,7 +44,6 @@ public class ImageDownloader<Token> extends HandlerThread {
 	}
 
 	public void queueImage(Token token, String url) {
-		Log.i(TAG, "Got a URL:  " + url);
 		requestMap.put(token, url);
 
 		mHandler.obtainMessage(MESSAGE_DOWNLOAD, token).sendToTarget();
@@ -61,7 +59,6 @@ public class ImageDownloader<Token> extends HandlerThread {
 			byte[] bitmapBytes = new JsonDataPuller().getUrlBytes(imageUrl);
 			final Bitmap bitmap = BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length);
 			bitmap.setDensity(DisplayMetrics.DENSITY_HIGH);
-			Log.i(TAG, "Bitmap created");
 
 			mResponseHandler.post(new Runnable() {
 				@Override

@@ -51,8 +51,6 @@ public class JsonDataPuller {
 		try {
 			String jsonString = getUrl(APPLE_RSS_URL);
 			Log.i(TAG, "Url:  " + APPLE_RSS_URL);
-			Log.i(TAG, "Received JSON:  " + jsonString);
-
 			appArrayList = parseApps(jsonString);
 		} catch (IOException e) {
 			Log.e(TAG, "Failed to fetch items", e);
@@ -62,7 +60,7 @@ public class JsonDataPuller {
 	}
 
 	private ArrayList<AppleApp> parseApps(String jsonOutput) {
-		ArrayList<AppleApp> appleAppList = new ArrayList<>(25); // update number if link changed;
+		ArrayList<AppleApp> appleAppList = new ArrayList<>(25); // update number if link changed
 		// could parse number from JSON url, but that might get messy if the link is changing anyway;
 		try {
 			JSONObject jsonObject = new JSONObject(jsonOutput);

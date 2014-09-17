@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import java.util.Set;
 public class RssListActivity extends ActionBarActivity implements RssListFragment.RssCallbacks, ExpandedAppFragment.ExpandedCallbacks {
 
 	private static final String FAVORITES_SAVED = "favorites";
+	private static final String TAG = "RssListActivity";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +30,7 @@ public class RssListActivity extends ActionBarActivity implements RssListFragmen
 		boolean favoritesSet = preferences.getBoolean(FAVORITES_SAVED, false);
 		if (favoritesSet) {
 			new LoadFavoritesTask().execute();
+			Log.i(TAG, "Loading favorites");
 		}
 
 		setContentView(R.layout.activity_masterdetail);
@@ -43,8 +46,14 @@ public class RssListActivity extends ActionBarActivity implements RssListFragmen
 	protected void onPause() {
 		super.onPause();
 		List<AppleApp> favoriteAppList = DataOrganizer.get(getApplicationContext()).getFavoriteAppList();
-		if (favoriteAppList != null) {
+		if (favoriteAppList != null && !favoriteAppList.isEmpty()) {
 			new SaveFavoritesTask().execute();
+			Log.i(TAG, "Saving favorites");
+		} else {
+			SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+			SharedPreferences.Editor editor = preferences.edit();
+			editor.putBoolean(FAVORITES_SAVED, false);
+			editor.apply();
 		}
 	}
 
@@ -125,7 +134,7 @@ public class RssListActivity extends ActionBarActivity implements RssListFragmen
 			SharedPreferences preferences = getPreferences(MODE_PRIVATE);
 			SharedPreferences.Editor editor = preferences.edit();
 			editor.putBoolean(FAVORITES_SAVED, true);
-			editor.commit();
+			editor.apply();
 		}
 	}
 }

@@ -31,16 +31,18 @@ public class DataOrganizer {
 
 	public void setAppleAppList(ArrayList<AppleApp> appleAppList) {
 		mAppleAppList = appleAppList;
+
 	}
-	/*
-			if (!mFavoriteAppSet.isEmpty()) {
+
+	public void initialCheckBoxes() {
+		if (!mFavoriteAppSet.isEmpty()) {
 			for (AppleApp appleApp : mAppleAppList) { // At setup, if newly downloaded app currently in favorite list, flags app as favorite too;
 				if (mFavoriteAppSet.contains(appleApp)) {
 					appleApp.setFavorite(true);
 				}
 			}
 		}
-	 */
+	}
 
 	public AppleApp getAppleApp(String appTitle) {
 		for (AppleApp appleApp : mAppleAppList) {
@@ -50,7 +52,14 @@ public class DataOrganizer {
 		}
 		return null;
 	}
-
+	/*
+	public void updateListItemApp(AppleApp appleApp) {
+		int position = mAppleAppList.indexOf(appleApp);
+		if (position > 0) {
+			mAppleAppList.set(position, appleApp);
+		}
+	}
+	*/
 	public void updateFavoriteAppList() {
 		Set<AppleApp> removalSet = new HashSet<>();
 		for (AppleApp appleApp : mFavoriteAppSet) { // get rid of un-favorites

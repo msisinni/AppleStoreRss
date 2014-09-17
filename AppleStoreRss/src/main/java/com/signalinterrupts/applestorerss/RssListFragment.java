@@ -28,6 +28,7 @@ public class RssListFragment extends ListFragment {
 	private ArrayList<AppleApp> mAppleAppList;
 	private ImageDownloader<ImageView> mImageThread;
 	private LruCache<String, Bitmap> mMemoryCache;
+	RssAdapter mRssAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -37,11 +38,11 @@ public class RssListFragment extends ListFragment {
 
 		setRetainInstance(true);
 		mAppleAppList = DataOrganizer.get(getActivity()).getAppleAppList();
-		if (mAppleAppList == null) {
+		if (mAppleAppList == null || mAppleAppList.isEmpty()) {
 			new DownloadAppsTask().execute();
 		} else {
-			RssAdapter adapter = new RssAdapter(mAppleAppList);
-			setListAdapter(adapter);
+			mRssAdapter = new RssAdapter(mAppleAppList);
+			setListAdapter(mRssAdapter);
 		}
 
 		mImageThread = new ImageDownloader<>(new Handler());
@@ -183,6 +184,7 @@ public class RssListFragment extends ListFragment {
 				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 					appleApp.setFavorite(isChecked);
 					mRssCallbacks.onListItemUpdated(appleApp);
+					//DataOrganizer.get(getActivity()).updateListItemApp(appleApp);
 				}
 			});
 
@@ -194,8 +196,10 @@ public class RssListFragment extends ListFragment {
 			} else { // grab from cache;
 				appImageSmall.setImageBitmap(bitmap);
 			}
+
 			return convertView;
 		}
+
 	}
 
 	private class DownloadAppsTask extends AsyncTask<Void, Void, ArrayList<AppleApp>> {
@@ -207,9 +211,10 @@ public class RssListFragment extends ListFragment {
 		@Override
 		protected void onPostExecute(ArrayList<AppleApp> appleAppList) {
 			DataOrganizer.get(getActivity()).setAppleAppList(appleAppList);
+			DataOrganizer.get(getActivity()).initialCheckBoxes();
 			mAppleAppList = DataOrganizer.get(getActivity()).getAppleAppList();
-			RssAdapter adapter = new RssAdapter(mAppleAppList);
-			setListAdapter(adapter);
+			mRssAdapter = new RssAdapter(mAppleAppList);
+			setListAdapter(mRssAdapter);
 		}
 	}
 }
