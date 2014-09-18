@@ -14,32 +14,39 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 
 public class RssListFragment extends ListFragment {
 
+	protected static final String bundleString = "ListFragmentBundle";
 	private RssCallbacks mRssCallbacks;
 	private ArrayList<AppleApp> mAppleAppList;
 	private ImageDownloader<ImageView> mImageThread;
 	private LruCache<String, Bitmap> mMemoryCache;
-	RssAdapter mRssAdapter;
+	private DownloadAppsTask mDownloadAppsTask;
+	protected RssAdapter mRssAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		getActivity().setTitle(getString(R.string.list_fragment_title));
+		setHasOptionsMenu(true);
 
 		setRetainInstance(true);
+
+
+
+		getActivity().setTitle(getString(R.string.list_fragment_title));
 		mAppleAppList = DataOrganizer.get(getActivity()).getAppleAppList();
 		if (mAppleAppList == null || mAppleAppList.isEmpty()) {
-			new DownloadAppsTask().execute();
+			mDownloadAppsTask = new DownloadAppsTask();
+			mDownloadAppsTask.execute();
 		} else {
 			mRssAdapter = new RssAdapter(mAppleAppList);
 			setListAdapter(mRssAdapter);
@@ -80,7 +87,30 @@ public class RssListFragment extends ListFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_rss_list, container, false);
+		View view = inflater.inflate(R.layout.fragment_rss_list, container, false);
+
+		Button refreshListButton = (Button) view.findViewById(R.id.empty_list_refreshButton);
+		refreshListButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				refreshList();
+			}
+		});
+
+
+		return view;
+	}
+
+	private void refreshList() {
+		if (mDownloadAppsTask!=null && mDownloadAppsTask.getStatus() != AsyncTask.Status.FINISHED) {
+			mDownloadAppsTask.cancel(true);
+		}
+		DataOrganizer.get(getActivity()).updateFavoriteAppList();
+		mDownloadAppsTask = new DownloadAppsTask();
+		mDownloadAppsTask.execute();
+		if (mAppleAppList != null) {
+			((RssAdapter) getListAdapter()).notifyDataSetChanged();
+		}
 	}
 
 	@Override
@@ -107,12 +137,17 @@ public class RssListFragment extends ListFragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_item_favorites:
-				////////////////////////////////////////////////////////////////////////////////////////
-				// switch to favorites
+				/*
+				DataOrganizer.get(getActivity()).updateFavoriteAppList();
+				((RssAdapter) getListAdapter()).clear();
+				mAppleAppList = DataOrganizer.get(getActivity()).getFavoriteAppList();
+				mRssAdapter = new RssAdapter(mAppleAppList);
+				setListAdapter(mRssAdapter);
+				*/
+				mRssCallbacks.onFavoritesSelected(false);
 				return true;
 			case R.id.menu_item_refresh:
-				///////////////////////////////////////////////////////////////////////////////////////
-				// refresh list if internet connected
+				refreshList();
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
@@ -156,6 +191,8 @@ public class RssListFragment extends ListFragment {
 		void onAppSelected(AppleApp appleApp);
 
 		void onListItemUpdated(AppleApp appleApp);
+
+		void onFavoritesSelected(boolean fromFavoritesToList);
 	}
 
 	private class RssAdapter extends ArrayAdapter<AppleApp> {
@@ -177,14 +214,15 @@ public class RssListFragment extends ListFragment {
 			TextView appPriceTextView = (TextView) convertView.findViewById(R.id.list_item_app_price);
 			appPriceTextView.setText(appleApp.getAppPrice());
 
-			CheckBox favoriteCheckBox = (CheckBox) convertView.findViewById(R.id.expanded_app_favoriteCheckBox);
+			final CheckBox favoriteCheckBox = (CheckBox) convertView.findViewById(R.id.list_item_favoriteCheckBox);
 			favoriteCheckBox.setChecked(appleApp.isFavorite());
-			favoriteCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			favoriteCheckBox.setOnClickListener(new View.OnClickListener() {
 				@Override
-				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				public void onClick(View v) {
+					boolean isChecked = favoriteCheckBox.isChecked();
+					favoriteCheckBox.setChecked(isChecked);
 					appleApp.setFavorite(isChecked);
 					mRssCallbacks.onListItemUpdated(appleApp);
-					//DataOrganizer.get(getActivity()).updateListItemApp(appleApp);
 				}
 			});
 

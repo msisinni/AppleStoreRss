@@ -27,7 +27,6 @@ public class ExpandedAppActivity extends ActionBarActivity implements ExpandedAp
 			mAppleAppList = DataOrganizer.get(this).getFavoriteAppList();
 		}
 
-
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
 			@Override

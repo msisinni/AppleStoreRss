@@ -31,7 +31,6 @@ public class DataOrganizer {
 
 	public void setAppleAppList(ArrayList<AppleApp> appleAppList) {
 		mAppleAppList = appleAppList;
-
 	}
 
 	public void initialCheckBoxes() {
@@ -52,14 +51,7 @@ public class DataOrganizer {
 		}
 		return null;
 	}
-	/*
-	public void updateListItemApp(AppleApp appleApp) {
-		int position = mAppleAppList.indexOf(appleApp);
-		if (position > 0) {
-			mAppleAppList.set(position, appleApp);
-		}
-	}
-	*/
+
 	public void updateFavoriteAppList() {
 		Set<AppleApp> removalSet = new HashSet<>();
 		for (AppleApp appleApp : mFavoriteAppSet) { // get rid of un-favorites
@@ -76,7 +68,6 @@ public class DataOrganizer {
 				mFavoriteAppSet.remove(appleApp);
 			}
 		}
-
 	}
 
 	public void addToFavorites() {

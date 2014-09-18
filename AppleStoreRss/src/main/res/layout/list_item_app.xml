@@ -40,7 +40,7 @@
 
 
 	<CheckBox
-		android:id="@+id/expanded_app_favoriteCheckBox"
+		android:id="@+id/list_item_favoriteCheckBox"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:button="@android:drawable/btn_star"
