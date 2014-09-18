@@ -12,9 +12,8 @@ import java.util.List;
 public class FavoritesDatabase extends SQLiteOpenHelper {
 
 	// while it would be easy enough to pass the string that turns into a bitmap for these images into the database,
-	// (which would also remove my need for a cache in the list of apps)
 	// I worry that the database may become too large if I am storing those strings too. I may have trouble saving
-	// everything during onPause as I intend;
+	// everything during onPause as I intend; Possibly test for further development;
 	private static final String TABLE_NAME = "favorite_apps";
 	private static final String ROW_ID = "id";
 	private static final String TITLE = "title";

@@ -1,10 +1,11 @@
 package com.signalinterrupts.applestorerss;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.support.v4.util.LruCache;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class DataOrganizer {
@@ -13,6 +14,11 @@ public class DataOrganizer {
 	private ArrayList<AppleApp> mAppleAppList;
 	private HashSet<AppleApp> mFavoriteAppSet = new HashSet<>();
 	private Context mContext;
+
+	final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024); // Memory in KB;
+	final int cacheSize = Math.min(maxMemory / 8, 350);
+	// 350 KB generously chosen as 25 images * ~12KB / image + some extra;
+	private LruCache<String, Bitmap> mMemoryCache = new LruCache<>(cacheSize);
 
 	private DataOrganizer(Context context) {
 		mContext = context;
@@ -85,6 +91,19 @@ public class DataOrganizer {
 
 	public void setFavoriteAppSet(HashSet<AppleApp> favoriteAppSet) {
 		mFavoriteAppSet = favoriteAppSet;
+	}
+
+	public void addBitmapToCache(String imageUrl, Bitmap bitmap) {
+		if (getBitmapFromCache(imageUrl) == null) {
+			mMemoryCache.put(imageUrl, bitmap);
+		}
+	}
+
+	public Bitmap getBitmapFromCache(String imageUrl) {
+		if (imageUrl == null) {
+			return null;
+		}
+		return mMemoryCache.get(imageUrl);
 	}
 
 }

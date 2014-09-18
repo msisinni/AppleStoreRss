@@ -182,10 +182,14 @@ public class AppleApp {
 		return mAppTitle.equals(otherAppleApp.getAppTitle());
 	}
 
+	/*
+	Thoughts for further development:  add int field to AppleApps for easier sorting instead of sorting by Title;
+	Less resource intensive than comparing Strings;
+	 */
 	@Override
 	public int hashCode() {
 		int hash = 17;
-		hash = 31*hash + mAppTitle.hashCode();
+		hash = 31 * hash + mAppTitle.hashCode();
 		return hash;
 	}
 
@@ -194,5 +198,3 @@ public class AppleApp {
 		return mAppTitle;
 	}
 }
-
-

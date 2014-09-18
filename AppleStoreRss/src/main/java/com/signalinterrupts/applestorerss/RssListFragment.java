@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ListFragment;
-import android.support.v4.util.LruCache;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -31,7 +30,6 @@ public class RssListFragment extends ListFragment {
 	private RssCallbacks mRssCallbacks;
 	private ArrayList<AppleApp> mAppleAppList;
 	private ImageDownloader<ImageView> mImageThread;
-	private LruCache<String, Bitmap> mMemoryCache;
 	private DownloadAppsTask mDownloadAppsTask;
 	protected RssAdapter mRssAdapter;
 
@@ -75,31 +73,14 @@ public class RssListFragment extends ListFragment {
 			public void onImageDownloaded(ImageView imageView, String imageUrl, Bitmap bitmap) {
 				if (isVisible()) { // make sure the Fragment shows the ImageView in question;
 					imageView.setImageBitmap(bitmap);
-					addBitmapToCache(imageUrl, bitmap);
+					DataOrganizer.get(getActivity()).addBitmapToCache(imageUrl, bitmap);
 				}
 			}
 		});
 		mImageThread.start();
 		mImageThread.getLooper();
 
-		final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024); // Memory in KB;
-		final int cacheSize = Math.min(maxMemory / 8, 350);
-		// 350 KB generously chosen as 25 images * ~12KB / image
-		mMemoryCache = new LruCache<>(cacheSize);
 
-	}
-
-	private void addBitmapToCache(String imageUrl, Bitmap bitmap) {
-		if (getBitmapFromCache(imageUrl) == null) {
-			mMemoryCache.put(imageUrl, bitmap);
-		}
-	}
-
-	private Bitmap getBitmapFromCache(String imageUrl) {
-		if (imageUrl == null) {
-			return null;
-		}
-		return mMemoryCache.get(imageUrl);
 	}
 
 	@Override
@@ -119,7 +100,11 @@ public class RssListFragment extends ListFragment {
 		refreshListButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				refreshList();
+				if (inRssMode) {
+					refreshList();
+				} else {
+					switchListMode();
+				}
 			}
 		});
 
@@ -168,23 +153,25 @@ public class RssListFragment extends ListFragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_item_favorite:
-				mImageThread.clearQueue();
-				mImageThread.quit();
-				DataOrganizer.get(getActivity()).updateFavoriteAppList();
-				if (mRssAdapter != null) {
-					mRssAdapter.clear();
-				}
-				mRssCallbacks.onFavoritesSelected(inRssMode);
-
+				switchListMode();
 				return true;
 			case R.id.menu_item_refresh:
 				refreshList();
-
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
 		}
 
+	}
+
+	public void switchListMode() {
+		mImageThread.clearQueue();
+		mImageThread.quit();
+		DataOrganizer.get(getActivity()).updateFavoriteAppList();
+		if (mRssAdapter != null) {
+			mRssAdapter.clear();
+		}
+		mRssCallbacks.onFavoritesSelected(inRssMode);
 	}
 
 	@Override
@@ -265,7 +252,7 @@ public class RssListFragment extends ListFragment {
 
 			ImageView appImageSmall = (ImageView) convertView.findViewById(R.id.list_item_app_picture);
 			//if (appImageSmall.getVisibility() == View.VISIBLE) {
-			final Bitmap bitmap = getBitmapFromCache(appleApp.getImageUrlSmall());
+			final Bitmap bitmap = DataOrganizer.get(getActivity()).getBitmapFromCache(appleApp.getImageUrlSmall());
 			if (bitmap == null) { // download if not in cache;
 				appImageSmall.setImageResource(R.drawable.loading_image_small);
 				mImageThread.queueImage(appImageSmall, appleApp.getImageUrlSmall());

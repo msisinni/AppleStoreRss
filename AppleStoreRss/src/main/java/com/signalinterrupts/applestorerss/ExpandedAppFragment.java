@@ -61,7 +61,6 @@ public class ExpandedAppFragment extends Fragment {
 
 		mAppImageView = (ImageView) view.findViewById(R.id.expanded_app_imageView);
 		mAppImageView.setImageResource(R.drawable.loading_image_large);
-		// Update when downloading portion complete; //////////////////////////////////////////////////
 
 		// Could make one OnClickListener for all webpage openers, but too messy with switch based on view ids imo;
 		TextView titleTextView = (TextView) view.findViewById(R.id.expanded_app_titleTextView);

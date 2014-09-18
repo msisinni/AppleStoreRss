@@ -12,7 +12,6 @@ import android.util.Log;
 
 import java.util.List;
 
-
 public class RssListActivity extends ActionBarActivity implements RssListFragment.RssCallbacks, ExpandedAppFragment.ExpandedCallbacks {
 
 	private static final String SHARED_PREFERENCES_STRING = "AppleRssPreferences";
@@ -48,7 +47,7 @@ public class RssListActivity extends ActionBarActivity implements RssListFragmen
 		List<AppleApp> favoriteAppList = DataOrganizer.get(getApplicationContext()).getFavoriteAppList();
 		if (favoriteAppList != null && !favoriteAppList.isEmpty()) {
 			new SaveFavoritesTask().execute();
-			Log.i(TAG, "Saving favorites");
+			Log.i(TAG, "Saving favorites"); // Leaving these in;
 			Log.i(TAG, favoriteAppList.toString());
 		} else {
 			Log.i(TAG, "No favorites to save");
@@ -63,7 +62,7 @@ public class RssListActivity extends ActionBarActivity implements RssListFragmen
 	public void onAppSelected(AppleApp appleApp, boolean fromRssToFavorites) {
 		if (findViewById(R.id.detailFragmentContainer) == null) {    // Start an instance of ExpandedAppActivity;
 			Intent intent = new Intent(this, ExpandedAppActivity.class);
-			intent.putExtra(ExpandedAppActivity.RSS_OR_FAVORITE, fromRssToFavorites); // True == appSelected was from the JSON list, not favorites;
+			intent.putExtra(ExpandedAppActivity.RSS_OR_FAVORITE, fromRssToFavorites); // True == appSelected was from the RSS list, not favorites;
 			intent.putExtra(ExpandedAppFragment.EXTRA_APP_TITLE, appleApp.getAppTitle());
 			startActivity(intent);
 		} else { // Replace the current (or add) ExpandedAppFragment on tablets;
@@ -112,7 +111,7 @@ public class RssListActivity extends ActionBarActivity implements RssListFragmen
 			fragmentTransaction.remove(currentFragment);
 		}
 		Bundle bundle = new Bundle();
-		bundle.putBoolean(RssListFragment.bundleString, !fromRssToFavorites);
+		bundle.putBoolean(RssListFragment.bundleString, !fromRssToFavorites); // put opposite of boolean in bundle
 		newFragment.setArguments(bundle);
 
 		if (findViewById(R.id.detailFragmentContainer) != null) {
@@ -127,22 +126,20 @@ public class RssListActivity extends ActionBarActivity implements RssListFragmen
 
 	@Override
 	public void onAppUpdated(AppleApp appleApp) {
-		FragmentManager fragmentManager = getSupportFragmentManager();
-		RssListFragment listFragment = (RssListFragment) fragmentManager.findFragmentById(R.id.fragmentContainer);
-		listFragment.updateUi();
+		coordinateUi(appleApp);
 	}
 
 	@Override
 	public void onExpandedAppUpdated(AppleApp appleApp) {
-		coordinateCheckBoxes(appleApp);
+		if (findViewById(R.id.detailFragmentContainer) != null) {
+			coordinateUi(appleApp);
+		}
 	}
 
-	private void coordinateCheckBoxes(AppleApp appleApp) {
-		if (findViewById(R.id.detailFragmentContainer) != null) {
-			FragmentManager fragmentManager = getSupportFragmentManager();
-			RssListFragment listFragment = (RssListFragment) fragmentManager.findFragmentById(R.id.fragmentContainer);
-			listFragment.updateUi();
-		}
+	private void coordinateUi(AppleApp appleApp) {
+		FragmentManager fragmentManager = getSupportFragmentManager();
+		RssListFragment listFragment = (RssListFragment) fragmentManager.findFragmentById(R.id.fragmentContainer);
+		listFragment.updateUi();
 	}
 
 	private class LoadFavoritesTask extends AsyncTask<Void, Void, Void> {
