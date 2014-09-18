@@ -49,6 +49,11 @@ public class DataOrganizer {
 				return appleApp;
 			}
 		}
+		for (AppleApp appleApp : mFavoriteAppSet) {
+			if (appleApp.getAppTitle().equals(appTitle)) {
+				return appleApp;
+			}
+		}
 		return null;
 	}
 
@@ -70,17 +75,8 @@ public class DataOrganizer {
 		}
 	}
 
-	public void addToFavorites() {
-		for (AppleApp appleApp : mAppleAppList) { // add new favorites / replace existing (in case update to app store)
-			if (appleApp.isFavorite()) {
-				mFavoriteAppSet.add(appleApp);
-			}
-		}
-	}
-
 	public ArrayList<AppleApp> getFavoriteAppList() {
 		if (!mFavoriteAppSet.isEmpty()) {
-			addToFavorites();
 			return new ArrayList<>(mFavoriteAppSet);
 		} else {
 			return null;

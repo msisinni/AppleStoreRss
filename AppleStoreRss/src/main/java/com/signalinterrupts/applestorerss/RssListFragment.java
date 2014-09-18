@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ListFragment;
 import android.support.v4.util.LruCache;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,6 +24,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class RssListFragment extends ListFragment {
+
+	private static final String TAG = "RssListFragment";
 
 	protected static final String bundleString = "ListFragmentBundle";
 	private RssCallbacks mRssCallbacks;
@@ -41,10 +44,13 @@ public class RssListFragment extends ListFragment {
 
 		setRetainInstance(true);
 
-		if (savedInstanceState != null) {
-			inRssMode = savedInstanceState.getBoolean(bundleString);
+		Bundle bundle = getArguments();
+		if (bundle != null) {
+			inRssMode = bundle.getBoolean(bundleString);
+			Log.d(TAG, "inRssMode = " + inRssMode);
 		}
 
+		Log.d(TAG, "Second inRssMode = " + inRssMode);
 		if (inRssMode) {
 			getActivity().setTitle(getString(R.string.list_fragment_title));
 			mAppleAppList = DataOrganizer.get(getActivity()).getAppleAppList();
@@ -56,6 +62,7 @@ public class RssListFragment extends ListFragment {
 				setListAdapter(mRssAdapter);
 			}
 		} else {
+			Log.d(TAG, "Favorites");
 			getActivity().setTitle(getString(R.string.list_fragment_title_favorites));
 			mAppleAppList = DataOrganizer.get(getActivity()).getFavoriteAppList();
 			if (mAppleAppList != null && !mAppleAppList.isEmpty()) {
@@ -143,7 +150,7 @@ public class RssListFragment extends ListFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (mAppleAppList != null) {
+		if (mAppleAppList != null && !mAppleAppList.isEmpty()) {
 			((RssAdapter) getListAdapter()).notifyDataSetChanged();
 		}
 	}
@@ -174,9 +181,13 @@ public class RssListFragment extends ListFragment {
 				mRssAdapter = new RssAdapter(mAppleAppList);
 				setListAdapter(mRssAdapter);
 				*/
+				DataOrganizer.get(getActivity()).updateFavoriteAppList();
 				mImageThread.clearQueue();
 				mImageThread.quit();
-				mRssCallbacks.onFavoritesSelected(!inRssMode);
+				if (mAppleAppList != null && !mAppleAppList.isEmpty()) {
+					((RssAdapter) getListAdapter()).clear();
+				}
+				mRssCallbacks.onFavoritesSelected(inRssMode);
 				return true;
 			case R.id.menu_item_refresh:
 				refreshList();

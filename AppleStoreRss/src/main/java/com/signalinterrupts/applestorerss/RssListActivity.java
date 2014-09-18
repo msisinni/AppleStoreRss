@@ -94,9 +94,6 @@ public class RssListActivity extends ActionBarActivity implements RssListFragmen
 
 	@Override
 	public void onFavoritesSelected(boolean fromRssToFavorites) {
-		Bundle bundle = new Bundle();
-		bundle.putBoolean(RssListFragment.bundleString, fromRssToFavorites);
-
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -104,10 +101,14 @@ public class RssListActivity extends ActionBarActivity implements RssListFragmen
 		if (oldDetail != null) {
 			fragmentTransaction.remove(oldDetail).commit();
 		}
-		Fragment newDetail = new RssListFragment();
-		newDetail.setArguments(bundle);
-		fragmentManager.beginTransaction().add(R.id.fragmentContainer, newDetail).commit();
 
+		Fragment newDetail = new RssListFragment();
+
+		Bundle bundle = new Bundle();
+		bundle.putBoolean(RssListFragment.bundleString, !fromRssToFavorites);
+		newDetail.setArguments(bundle);
+
+		fragmentManager.beginTransaction().add(R.id.fragmentContainer, newDetail).commit();
 	}
 
 	@Override

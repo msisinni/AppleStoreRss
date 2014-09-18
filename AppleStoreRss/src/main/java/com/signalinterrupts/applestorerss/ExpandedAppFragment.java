@@ -46,8 +46,7 @@ public class ExpandedAppFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		String appTitle = getArguments().getString(EXTRA_APP_TITLE);
 		mAppleApp = DataOrganizer.get(getActivity()).getAppleApp(appTitle);
-		/////////////////////////////////////////////////////Check on this ///////////////////////////////// --v
-		setHasOptionsMenu(true);
+		setHasOptionsMenu(false);
 		new DownloadImagesTask().execute();
 
 	}
