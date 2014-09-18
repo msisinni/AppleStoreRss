@@ -5,12 +5,16 @@
 	<string name="title_activity_rss_reader">RssReaderActivity</string>
 	<string name="action_settings">Settings</string>
 	<string name="list_fragment_title">Top 25 apps on the iTunes Store</string>
+	<string name="list_fragment_title_favorites">Favorite apps</string>
+	<string name="menu_item_list">View RSS</string>
 	<string name="menu_item_favorites">View favorites</string>
 	<string name="menu_item_refresh_list">Refresh list</string>
 	<string name="menu_item_remove_favorite">Remove from favorites</string>
 	<string name="share_app">Share</string>
 	<string name="empty_list">No apps found! Check your internet connection and refresh.</string>
+	<string name="empty_list_favorite">No favorite apps found!</string>
 	<string name="refresh">Refresh</string>
+	<string name="refresh_favorite">Return to RSS list</string>
 	<string name="share_string">Share </string>
 
 </resources>

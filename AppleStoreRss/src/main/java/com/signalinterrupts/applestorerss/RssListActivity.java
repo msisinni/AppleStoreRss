@@ -59,10 +59,10 @@ public class RssListActivity extends ActionBarActivity implements RssListFragmen
 	}
 
 	@Override
-	public void onAppSelected(AppleApp appleApp) {
+	public void onAppSelected(AppleApp appleApp, boolean fromRssToFavorites) {
 		if (findViewById(R.id.detailFragmentContainer) == null) {    // Start an instance of ExpandedAppActivity;
 			Intent intent = new Intent(this, ExpandedAppActivity.class);
-			intent.putExtra(ExpandedAppActivity.JSON_OR_FAVORITE, true); // True == appSelected was from the JSON list, not favorites;
+			intent.putExtra(ExpandedAppActivity.RSS_OR_FAVORITE, fromRssToFavorites); // True == appSelected was from the JSON list, not favorites;
 			intent.putExtra(ExpandedAppFragment.EXTRA_APP_TITLE, appleApp.getAppTitle());
 			startActivity(intent);
 		} else { // Replace the current (or add) ExpandedAppFragment on tablets;
@@ -93,23 +93,21 @@ public class RssListActivity extends ActionBarActivity implements RssListFragmen
 	}
 
 	@Override
-	public void onFavoritesSelected(boolean fromFavoritesToList) {
+	public void onFavoritesSelected(boolean fromRssToFavorites) {
 		Bundle bundle = new Bundle();
-		bundle.putBoolean(RssListFragment.bundleString, fromFavoritesToList);
+		bundle.putBoolean(RssListFragment.bundleString, fromRssToFavorites);
 
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
 		Fragment oldDetail = fragmentManager.findFragmentById(R.id.fragmentContainer);
-		Fragment newDetail = fragmentManager.findFragmentById(R.id.fragmentContainer);
-
 		if (oldDetail != null) {
-			fragmentTransaction.remove(oldDetail);
+			fragmentTransaction.remove(oldDetail).commit();
 		}
-		if (newDetail == null) {
-			newDetail = new RssListFragment();
-			fragmentManager.beginTransaction().add(R.id.fragmentContainer, newDetail).commit();
-		}
+		Fragment newDetail = new RssListFragment();
+		newDetail.setArguments(bundle);
+		fragmentManager.beginTransaction().add(R.id.fragmentContainer, newDetail).commit();
+
 	}
 
 	@Override

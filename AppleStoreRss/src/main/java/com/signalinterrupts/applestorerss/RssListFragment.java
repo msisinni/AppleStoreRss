@@ -20,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.net.HttpURLConnection;
 import java.util.ArrayList;
 
 public class RssListFragment extends ListFragment {
@@ -33,6 +32,8 @@ public class RssListFragment extends ListFragment {
 	private DownloadAppsTask mDownloadAppsTask;
 	protected RssAdapter mRssAdapter;
 
+	private boolean inRssMode = true;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -40,16 +41,27 @@ public class RssListFragment extends ListFragment {
 
 		setRetainInstance(true);
 
+		if (savedInstanceState != null) {
+			inRssMode = savedInstanceState.getBoolean(bundleString);
+		}
 
-
-		getActivity().setTitle(getString(R.string.list_fragment_title));
-		mAppleAppList = DataOrganizer.get(getActivity()).getAppleAppList();
-		if (mAppleAppList == null || mAppleAppList.isEmpty()) {
-			mDownloadAppsTask = new DownloadAppsTask();
-			mDownloadAppsTask.execute();
+		if (inRssMode) {
+			getActivity().setTitle(getString(R.string.list_fragment_title));
+			mAppleAppList = DataOrganizer.get(getActivity()).getAppleAppList();
+			if (mAppleAppList == null || mAppleAppList.isEmpty()) {
+				mDownloadAppsTask = new DownloadAppsTask();
+				mDownloadAppsTask.execute();
+			} else {
+				mRssAdapter = new RssAdapter(mAppleAppList);
+				setListAdapter(mRssAdapter);
+			}
 		} else {
-			mRssAdapter = new RssAdapter(mAppleAppList);
-			setListAdapter(mRssAdapter);
+			getActivity().setTitle(getString(R.string.list_fragment_title_favorites));
+			mAppleAppList = DataOrganizer.get(getActivity()).getFavoriteAppList();
+			if (mAppleAppList != null && !mAppleAppList.isEmpty()) {
+				mRssAdapter = new RssAdapter(mAppleAppList);
+				setListAdapter(mRssAdapter);
+			}
 		}
 
 		mImageThread = new ImageDownloader<>(new Handler());
@@ -89,7 +101,16 @@ public class RssListFragment extends ListFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_rss_list, container, false);
 
+		TextView emptyListTextView = (TextView) view.findViewById(R.id.empty_list_textView);
+
 		Button refreshListButton = (Button) view.findViewById(R.id.empty_list_refreshButton);
+		if (inRssMode) {
+			emptyListTextView.setText(R.string.empty_list);
+			refreshListButton.setText(R.string.refresh);
+		} else {
+			emptyListTextView.setText(R.string.empty_list_favorite);
+			refreshListButton.setText(R.string.refresh_favorite);
+		}
 		refreshListButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -97,14 +118,14 @@ public class RssListFragment extends ListFragment {
 			}
 		});
 
-
 		return view;
 	}
 
 	private void refreshList() {
-		if (mDownloadAppsTask!=null && mDownloadAppsTask.getStatus() != AsyncTask.Status.FINISHED) {
+		if (mDownloadAppsTask != null && mDownloadAppsTask.getStatus() != AsyncTask.Status.FINISHED) {
 			mDownloadAppsTask.cancel(true);
 		}
+		inRssMode = true;
 		DataOrganizer.get(getActivity()).updateFavoriteAppList();
 		mDownloadAppsTask = new DownloadAppsTask();
 		mDownloadAppsTask.execute();
@@ -116,7 +137,7 @@ public class RssListFragment extends ListFragment {
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		AppleApp appleApp = ((RssAdapter) getListAdapter()).getItem(position);
-		mRssCallbacks.onAppSelected(appleApp);
+		mRssCallbacks.onAppSelected(appleApp, inRssMode);
 	}
 
 	@Override
@@ -131,12 +152,21 @@ public class RssListFragment extends ListFragment {
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
 		inflater.inflate(R.menu.fragment_rss_list_menu, menu);
+		MenuItem favoriteItem = menu.findItem(R.id.menu_item_favorite);
+		MenuItem refreshItem = menu.findItem(R.id.menu_item_refresh);
+		if (inRssMode) {
+			favoriteItem.setTitle(R.string.menu_item_favorites);
+			refreshItem.setVisible(true);
+		} else {
+			favoriteItem.setTitle(R.string.menu_item_list);
+			refreshItem.setVisible(false);
+		}
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.menu_item_favorites:
+			case R.id.menu_item_favorite:
 				/*
 				DataOrganizer.get(getActivity()).updateFavoriteAppList();
 				((RssAdapter) getListAdapter()).clear();
@@ -144,7 +174,9 @@ public class RssListFragment extends ListFragment {
 				mRssAdapter = new RssAdapter(mAppleAppList);
 				setListAdapter(mRssAdapter);
 				*/
-				mRssCallbacks.onFavoritesSelected(false);
+				mImageThread.clearQueue();
+				mImageThread.quit();
+				mRssCallbacks.onFavoritesSelected(!inRssMode);
 				return true;
 			case R.id.menu_item_refresh:
 				refreshList();
@@ -188,11 +220,11 @@ public class RssListFragment extends ListFragment {
 	}
 
 	public interface RssCallbacks {
-		void onAppSelected(AppleApp appleApp);
+		void onAppSelected(AppleApp appleApp, boolean fromListToFavorites);
 
 		void onListItemUpdated(AppleApp appleApp);
 
-		void onFavoritesSelected(boolean fromFavoritesToList);
+		void onFavoritesSelected(boolean fromListToFavorites);
 	}
 
 	private class RssAdapter extends ArrayAdapter<AppleApp> {
@@ -202,6 +234,9 @@ public class RssListFragment extends ListFragment {
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
+			if (mAppleAppList.isEmpty()) {
+				return null;
+			}
 			if (convertView == null) {
 				convertView = getActivity().getLayoutInflater().inflate(R.layout.list_item_app, null);
 			}
