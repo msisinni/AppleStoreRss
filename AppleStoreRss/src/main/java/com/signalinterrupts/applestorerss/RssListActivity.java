@@ -49,6 +49,7 @@ public class RssListActivity extends ActionBarActivity implements RssListFragmen
 		if (favoriteAppList != null && !favoriteAppList.isEmpty()) {
 			new SaveFavoritesTask().execute();
 			Log.i(TAG, "Saving favorites");
+			Log.i(TAG, favoriteAppList.toString());
 		} else {
 			Log.i(TAG, "No favorites to save");
 			SharedPreferences preferences = this.getSharedPreferences(SHARED_PREFERENCES_STRING, MODE_PRIVATE);
@@ -92,23 +93,36 @@ public class RssListActivity extends ActionBarActivity implements RssListFragmen
 		}
 	}
 
+	Fragment storedFragment;
+
 	@Override
 	public void onFavoritesSelected(boolean fromRssToFavorites) {
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-		Fragment oldDetail = fragmentManager.findFragmentById(R.id.fragmentContainer);
-		if (oldDetail != null) {
-			fragmentTransaction.remove(oldDetail).commit();
+		Fragment currentFragment = fragmentManager.findFragmentById(R.id.fragmentContainer);
+		Fragment newFragment;
+		if (storedFragment != null) {
+			newFragment = storedFragment;
+		} else {
+			newFragment = new RssListFragment();
 		}
-
-		Fragment newDetail = new RssListFragment();
-
+		if (currentFragment != null) {
+			storedFragment = currentFragment;
+			fragmentTransaction.remove(currentFragment);
+		}
 		Bundle bundle = new Bundle();
 		bundle.putBoolean(RssListFragment.bundleString, !fromRssToFavorites);
-		newDetail.setArguments(bundle);
+		newFragment.setArguments(bundle);
 
-		fragmentManager.beginTransaction().add(R.id.fragmentContainer, newDetail).commit();
+		if (findViewById(R.id.detailFragmentContainer) != null) {
+			Fragment expandedDetail = fragmentManager.findFragmentById(R.id.detailFragmentContainer);
+			if (expandedDetail != null) {
+				fragmentTransaction.remove(expandedDetail);
+			}
+		}
+		fragmentTransaction.add(R.id.fragmentContainer, newFragment).commit();
+
 	}
 
 	@Override
@@ -142,6 +156,7 @@ public class RssListActivity extends ActionBarActivity implements RssListFragmen
 		@Override
 		protected void onPostExecute(Void aVoid) {
 			Log.i(TAG, "Favorites loaded");
+			Log.i(TAG, DataOrganizer.get(getApplicationContext()).getFavoriteAppList().toString());
 		}
 	}
 

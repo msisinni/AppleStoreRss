@@ -81,9 +81,9 @@ public class FavoritesDatabase extends SQLiteOpenHelper {
 
 		SQLiteDatabase database = getReadableDatabase();
 
-		String sqlExtract = String.format("Select * from %s order by %s", TABLE_NAME, ROW_ID);
-		//String sqlExtract = String.format("Select %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s from %s order by %s", TITLE, PRICE, SUMMARY, COPYRIGHT, COMPANY_NAME, COMPANY_LINK, STORE_LINK,
-		//		                                 DATE, IMAGE_SMALL, IMAGE_BIG, GENRE, GENRE_LINK, TABLE_NAME, ROW_ID);
+		//String sqlExtract = String.format("Select * from %s order by %s", TABLE_NAME, ROW_ID);
+		String sqlExtract = String.format("Select %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s from %s order by %s", TITLE, PRICE, SUMMARY, COPYRIGHT, COMPANY_NAME, COMPANY_LINK, STORE_LINK,
+				                                 DATE, IMAGE_SMALL, IMAGE_BIG, GENRE, GENRE_LINK, TABLE_NAME, ROW_ID);
 
 		Cursor cursor = database.rawQuery(sqlExtract, null);
 

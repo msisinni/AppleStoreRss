@@ -47,10 +47,9 @@ public class RssListFragment extends ListFragment {
 		Bundle bundle = getArguments();
 		if (bundle != null) {
 			inRssMode = bundle.getBoolean(bundleString);
-			Log.d(TAG, "inRssMode = " + inRssMode);
 		}
 
-		Log.d(TAG, "Second inRssMode = " + inRssMode);
+		Log.i(TAG, "inRssMode = " + inRssMode);
 		if (inRssMode) {
 			getActivity().setTitle(getString(R.string.list_fragment_title));
 			mAppleAppList = DataOrganizer.get(getActivity()).getAppleAppList();
@@ -62,7 +61,6 @@ public class RssListFragment extends ListFragment {
 				setListAdapter(mRssAdapter);
 			}
 		} else {
-			Log.d(TAG, "Favorites");
 			getActivity().setTitle(getString(R.string.list_fragment_title_favorites));
 			mAppleAppList = DataOrganizer.get(getActivity()).getFavoriteAppList();
 			if (mAppleAppList != null && !mAppleAppList.isEmpty()) {
@@ -136,9 +134,7 @@ public class RssListFragment extends ListFragment {
 		DataOrganizer.get(getActivity()).updateFavoriteAppList();
 		mDownloadAppsTask = new DownloadAppsTask();
 		mDownloadAppsTask.execute();
-		if (mAppleAppList != null) {
-			((RssAdapter) getListAdapter()).notifyDataSetChanged();
-		}
+		updateUi();
 	}
 
 	@Override
@@ -150,9 +146,7 @@ public class RssListFragment extends ListFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (mAppleAppList != null && !mAppleAppList.isEmpty()) {
-			((RssAdapter) getListAdapter()).notifyDataSetChanged();
-		}
+		updateUi();
 	}
 
 	@Override
@@ -174,23 +168,18 @@ public class RssListFragment extends ListFragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_item_favorite:
-				/*
-				DataOrganizer.get(getActivity()).updateFavoriteAppList();
-				((RssAdapter) getListAdapter()).clear();
-				mAppleAppList = DataOrganizer.get(getActivity()).getFavoriteAppList();
-				mRssAdapter = new RssAdapter(mAppleAppList);
-				setListAdapter(mRssAdapter);
-				*/
-				DataOrganizer.get(getActivity()).updateFavoriteAppList();
 				mImageThread.clearQueue();
 				mImageThread.quit();
-				if (mAppleAppList != null && !mAppleAppList.isEmpty()) {
-					((RssAdapter) getListAdapter()).clear();
+				DataOrganizer.get(getActivity()).updateFavoriteAppList();
+				if (mRssAdapter != null) {
+					mRssAdapter.clear();
 				}
 				mRssCallbacks.onFavoritesSelected(inRssMode);
+
 				return true;
 			case R.id.menu_item_refresh:
 				refreshList();
+
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
@@ -210,6 +199,12 @@ public class RssListFragment extends ListFragment {
 		mImageThread.quit();
 	}
 
+	public void updateUi() {
+		if (mAppleAppList != null && !mAppleAppList.isEmpty()) {
+			((RssAdapter) getListAdapter()).notifyDataSetChanged();
+		}
+	}
+
 	/**
 	 * Interface and methods for clean phone && tablet UIs
 	 */
@@ -224,10 +219,6 @@ public class RssListFragment extends ListFragment {
 	public void onDetach() {
 		super.onDetach();
 		mRssCallbacks = null;
-	}
-
-	public void updateUi() {
-		((RssAdapter) getListAdapter()).notifyDataSetChanged();
 	}
 
 	public interface RssCallbacks {
@@ -273,6 +264,7 @@ public class RssListFragment extends ListFragment {
 			});
 
 			ImageView appImageSmall = (ImageView) convertView.findViewById(R.id.list_item_app_picture);
+			//if (appImageSmall.getVisibility() == View.VISIBLE) {
 			final Bitmap bitmap = getBitmapFromCache(appleApp.getImageUrlSmall());
 			if (bitmap == null) { // download if not in cache;
 				appImageSmall.setImageResource(R.drawable.loading_image_small);
@@ -280,6 +272,7 @@ public class RssListFragment extends ListFragment {
 			} else { // grab from cache;
 				appImageSmall.setImageBitmap(bitmap);
 			}
+			//}
 
 			return convertView;
 		}

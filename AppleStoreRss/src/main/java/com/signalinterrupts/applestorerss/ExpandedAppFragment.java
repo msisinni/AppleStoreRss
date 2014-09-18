@@ -165,6 +165,10 @@ public class ExpandedAppFragment extends Fragment {
 				return R.drawable.genre_music;
 			case "Social Networking":
 				return R.drawable.genre_social;
+			case "Productivity":
+				return R.drawable.genre_productivity;
+			case "Utilities":
+				return R.drawable.genre_utilities;
 			default:
 				return R.drawable.genre_default;
 		}
