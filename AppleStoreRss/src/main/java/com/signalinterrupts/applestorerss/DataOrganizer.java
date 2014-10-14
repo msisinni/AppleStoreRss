@@ -11,8 +11,8 @@ import java.util.Set;
 public class DataOrganizer {
 
 	private static DataOrganizer sDataOrganizer;
-	private ArrayList<AppleApp> mAppleAppList;
-	private HashSet<AppleApp> mFavoriteAppSet = new HashSet<>();
+	private static ArrayList<AppleApp> mAppleAppList;
+	private static HashSet<AppleApp> mFavoriteAppSet = new HashSet<>();
 	private Context mContext;
 
 	final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024); // Memory in KB;

@@ -1,5 +1,6 @@
 package com.signalinterrupts.applestorerss;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -221,6 +222,7 @@ public class RssListFragment extends ListFragment {
 			super(getActivity(), 0, appleAppList);
 		}
 
+		@SuppressLint("InflateParams")
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			if (mAppleAppList.isEmpty()) {

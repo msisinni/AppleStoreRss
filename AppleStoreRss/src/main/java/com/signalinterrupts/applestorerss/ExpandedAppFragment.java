@@ -24,7 +24,7 @@ import java.io.IOException;
 
 public class ExpandedAppFragment extends Fragment {
 	private static final String TAG = "ExpandedAppFragment";
-	public static final String EXTRA_APP_TITLE = "applestorerss.app_title";
+	protected static final String EXTRA_APP_TITLE = "applestorerss.app_title";
 
 	private AppleApp mAppleApp;
 	private ExpandedCallbacks mExpandedCallbacks;
@@ -177,7 +177,7 @@ public class ExpandedAppFragment extends Fragment {
 		intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.share_string) + mAppleApp.getAppTitle());
 		intent.putExtra(Intent.EXTRA_TEXT, mAppleApp.getStoreLink());
 		intent.setType("text/plain");
-		startActivity(Intent.createChooser(intent, getString(R.string.share_string) + mAppleApp.getAppTitle()));
+		startActivity(Intent.createChooser(intent, getString(R.string.share_string) + " " + mAppleApp.getAppTitle()));
 	}
 
 	public void updateFavorite(String appTitle) {
