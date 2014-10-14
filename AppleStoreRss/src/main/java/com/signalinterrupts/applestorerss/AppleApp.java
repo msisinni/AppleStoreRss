@@ -4,21 +4,21 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class AppleApp {
+class AppleApp {
 
-	private String mAppTitle;
-	private String mAppPrice;
+	private final String mAppTitle;
+	private final String mAppPrice;
+	private final String mSummary;
+	private final String mCopyright;
+	private final String mCompanyName;
+	private final String mCompanyLink;
+	private final String mStoreLink;
+	private final String mDate;
+	private final String mImageUrlSmall;
+	private final String mImageUrlBig;
+	private final String mGenre;
+	private final String mGenreLink;
 	private boolean mFavorite;
-	private String mSummary;
-	private String mCopyright;
-	private String mCompanyName;
-	private String mCompanyLink;
-	private String mStoreLink;
-	private String mDate;
-	private String mImageUrlSmall;
-	private String mImageUrlBig;
-	private String mGenre;
-	private String mGenreLink;
 
 	public String getAppTitle() {
 		return mAppTitle;
@@ -26,10 +26,6 @@ public class AppleApp {
 
 	public String getAppPrice() {
 		return mAppPrice;
-	}
-
-	public boolean isFavorite() {
-		return mFavorite;
 	}
 
 	public String getSummary() {
@@ -72,14 +68,17 @@ public class AppleApp {
 		return mGenreLink;
 	}
 
+	public boolean isFavorite() {
+		return mFavorite;
+	}
+
 	public void setFavorite(boolean favorite) {
 		mFavorite = favorite;
 	}
 
 	public static class Builder {
-		private String bAppTitle;
+		private final String bAppTitle;
 		private String bAppPrice;
-		private boolean bFavorite;
 		private String bSummary;
 		private String bCopyright;
 		private String bCompanyName;
@@ -97,7 +96,6 @@ public class AppleApp {
 
 		// @formatter:off
 		public Builder appPrice(String s) { bAppPrice = s; return this; }
-		public Builder favorite(boolean b) { bFavorite = b; return this; }
 		public Builder summary(String s) { bSummary = s; return this; }
 		public Builder copyright(String s) { bCopyright = s; return this; }
 		public Builder companyName(String s) { bCompanyName = s; return this; }
@@ -118,7 +116,6 @@ public class AppleApp {
 	private AppleApp(Builder builder) {
 		mAppTitle = builder.bAppTitle;
 		mAppPrice = builder.bAppPrice;
-		mFavorite = builder.bFavorite;
 		mSummary = builder.bSummary;
 		mCopyright = builder.bCopyright;
 		mCompanyName = builder.bCompanyName;
@@ -129,48 +126,6 @@ public class AppleApp {
 		mImageUrlBig = builder.bImageUrlBig;
 		mGenre = builder.bGenre;
 		mGenreLink = builder.bGenreLink;
-	}
-
-	public AppleApp(JSONObject jsonObject) throws JSONException {
-		final String label = "label";
-		final String attributes = "attributes";
-
-		JSONObject jsonElement;
-		jsonElement = jsonObject.getJSONObject("im:name");
-		mAppTitle = jsonElement.getString(label);
-
-		JSONArray jsonArray = jsonObject.getJSONArray("im:image");
-		jsonElement = (JSONObject) jsonArray.get(0);
-		mImageUrlSmall = jsonElement.getString(label);
-
-		jsonElement = (JSONObject) jsonArray.get(2);
-		mImageUrlBig = jsonElement.getString(label);
-
-		jsonElement = jsonObject.getJSONObject("summary");
-		mSummary = jsonElement.getString(label);
-
-		jsonElement = jsonObject.getJSONObject("im:price");
-		mAppPrice = jsonElement.getString(label);
-
-		jsonElement = jsonObject.getJSONObject("rights");
-		mCopyright = jsonElement.getString(label);
-
-		jsonElement = jsonObject.getJSONObject("id");
-		mStoreLink = jsonElement.getString(label);
-
-		jsonElement = jsonObject.getJSONObject("im:artist");
-		mCompanyName = jsonElement.getString(label);
-		jsonElement = jsonElement.getJSONObject(attributes);
-		mCompanyLink = jsonElement.getString("href");
-
-		jsonElement = jsonObject.getJSONObject("category");
-		jsonElement = jsonElement.getJSONObject(attributes);
-		mGenre = jsonElement.getString("term");
-		mGenreLink = jsonElement.getString("scheme");
-
-		jsonElement = jsonObject.getJSONObject("im:releaseDate");
-		jsonElement = jsonElement.getJSONObject(attributes);
-		mDate = jsonElement.getString(label);
 	}
 
 	@Override
