@@ -72,12 +72,7 @@ public class ExpandedAppActivity extends ActionBarActivity implements ExpandedAp
 	}
 
 	@Override
-	public void onAppUpdated(AppleApp appleApp) {
-		// method only useful in RssListActivity
-	}
-
-	@Override
-	public void onExpandedAppUpdated(AppleApp appleApp) {
+	public void onAppUpdated() {
 		// method only useful in RssListActivity
 	}
 

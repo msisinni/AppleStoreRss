@@ -87,8 +87,7 @@ public class ExpandedAppFragment extends Fragment {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				mAppleApp.setFavorite(isChecked);
-				mExpandedCallbacks.onAppUpdated(mAppleApp);
-				mExpandedCallbacks.onExpandedAppUpdated(mAppleApp);
+				mExpandedCallbacks.onAppUpdated();
 			}
 		});
 
@@ -226,9 +225,7 @@ public class ExpandedAppFragment extends Fragment {
 	}
 
 	public interface ExpandedCallbacks {
-		void onAppUpdated(AppleApp appleApp);
-
-		void onExpandedAppUpdated(AppleApp appleApp);
+		void onAppUpdated();
 	}
 
 }

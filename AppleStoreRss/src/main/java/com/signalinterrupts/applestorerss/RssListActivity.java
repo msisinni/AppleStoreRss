@@ -92,7 +92,7 @@ public class RssListActivity extends ActionBarActivity implements RssListFragmen
 		}
 	}
 
-	Fragment storedFragment;
+	private static Fragment storedFragment;
 
 	@Override
 	public void onFavoritesSelected(boolean fromRssToFavorites) {
@@ -125,18 +125,11 @@ public class RssListActivity extends ActionBarActivity implements RssListFragmen
 	}
 
 	@Override
-	public void onAppUpdated(AppleApp appleApp) {
-		coordinateUi(appleApp);
+	public void onAppUpdated() {
+		coordinateUi();
 	}
 
-	@Override
-	public void onExpandedAppUpdated(AppleApp appleApp) {
-		if (findViewById(R.id.detailFragmentContainer) != null) {
-			coordinateUi(appleApp);
-		}
-	}
-
-	private void coordinateUi(AppleApp appleApp) {
+	private void coordinateUi() {
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		RssListFragment listFragment = (RssListFragment) fragmentManager.findFragmentById(R.id.fragmentContainer);
 		listFragment.updateUi();
@@ -170,7 +163,7 @@ public class RssListActivity extends ActionBarActivity implements RssListFragmen
 			SharedPreferences preferences = RssListActivity.this.getSharedPreferences(SHARED_PREFERENCES_STRING, MODE_PRIVATE);
 			SharedPreferences.Editor editor = preferences.edit();
 			editor.putBoolean(FAVORITES_SAVED, true);
-			editor.commit();
+			editor.apply();
 			Log.i(TAG, "Favorites saved");
 		}
 	}
