@@ -23,9 +23,9 @@ public class ExpandedAppActivity extends ActionBarActivity implements ExpandedAp
 
 		// Following lines done so that paging is possible through either RSS or Favorite List
 		if (getIntent().getBooleanExtra(RSS_OR_FAVORITE, true)) {
-			mAppleAppList = DataOrganizer.get(this).getAppleAppList();
+			mAppleAppList = DataOrganizer.get().getAppleAppList();
 		} else {
-			mAppleAppList = DataOrganizer.get(this).getFavoriteAppList();
+			mAppleAppList = DataOrganizer.get().getFavoriteAppList();
 		}
 
 		FragmentManager fragmentManager = getSupportFragmentManager();

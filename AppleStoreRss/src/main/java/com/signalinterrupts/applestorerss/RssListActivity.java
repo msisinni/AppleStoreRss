@@ -43,8 +43,8 @@ public class RssListActivity extends ActionBarActivity implements RssListFragmen
 	@Override
 	protected void onPause() {
 		super.onPause();
-		DataOrganizer.get(getApplicationContext()).updateFavoriteAppList();
-		List<AppleApp> favoriteAppList = DataOrganizer.get(getApplicationContext()).getFavoriteAppList();
+		DataOrganizer.get().updateFavoriteAppList();
+		List<AppleApp> favoriteAppList = DataOrganizer.get().getFavoriteAppList();
 		if (favoriteAppList != null && !favoriteAppList.isEmpty()) {
 			new SaveFavoritesTask().execute();
 			Log.i(TAG, "Saving favorites"); // Leaving these in;
@@ -139,14 +139,14 @@ public class RssListActivity extends ActionBarActivity implements RssListFragmen
 		@Override
 		protected Void doInBackground(Void... params) {
 			FavoritesDatabase favoritesDatabase = new FavoritesDatabase(getApplicationContext());
-			DataOrganizer.get(getApplicationContext()).setFavoriteAppSet(favoritesDatabase.loadFavorites());
+			DataOrganizer.get().setFavoriteAppSet(favoritesDatabase.loadFavorites());
 			return null;
 		}
 
 		@Override
 		protected void onPostExecute(Void aVoid) {
 			Log.i(TAG, "Favorites loaded");
-			Log.i(TAG, DataOrganizer.get(getApplicationContext()).getFavoriteAppList().toString());
+			Log.i(TAG, DataOrganizer.get().getFavoriteAppList().toString());
 		}
 	}
 
@@ -154,7 +154,7 @@ public class RssListActivity extends ActionBarActivity implements RssListFragmen
 		@Override
 		protected Void doInBackground(Void... params) {
 			FavoritesDatabase favoritesDatabase = new FavoritesDatabase(getApplicationContext());
-			favoritesDatabase.saveFavorites(DataOrganizer.get(getApplicationContext()).getFavoriteAppList());
+			favoritesDatabase.saveFavorites(DataOrganizer.get().getFavoriteAppList());
 			return null;
 		}
 

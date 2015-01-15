@@ -8,27 +8,22 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public class DataOrganizer {
+public enum DataOrganizer {
+	INSTANCE;
 
-	private static DataOrganizer sDataOrganizer;
 	private ArrayList<AppleApp> mAppleAppList;
 	private HashSet<AppleApp> mFavoriteAppSet = new HashSet<>();
-	private Context mContext;
 
 	final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024); // Memory in KB;
 	final int cacheSize = Math.min(maxMemory / 8, 350);
 	// 350 KB generously chosen as 25 images * ~12KB / image + some extra;
 	private LruCache<String, Bitmap> mMemoryCache = new LruCache<>(cacheSize);
 
-	private DataOrganizer(Context context) {
-		mContext = context;
+	private DataOrganizer() {
 	}
 
-	public static DataOrganizer get(Context context) {
-		if (sDataOrganizer == null) {
-			sDataOrganizer = new DataOrganizer(context.getApplicationContext());
-		}
-		return sDataOrganizer;
+	public static DataOrganizer get() {
+		return INSTANCE;
 	}
 
 	public ArrayList<AppleApp> getAppleAppList() {
