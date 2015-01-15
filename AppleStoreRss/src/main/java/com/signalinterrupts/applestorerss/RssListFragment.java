@@ -81,7 +81,6 @@ public class RssListFragment extends ListFragment {
 		mImageThread.start();
 		mImageThread.getLooper();
 
-
 	}
 
 	@Override
@@ -126,6 +125,9 @@ public class RssListFragment extends ListFragment {
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		AppleApp appleApp = ((RssAdapter) getListAdapter()).getItem(position);
+		if (!inRssMode && !appleApp.isFavorite()) {
+			return;
+		}
 		mRssCallbacks.onAppSelected(appleApp, inRssMode);
 	}
 

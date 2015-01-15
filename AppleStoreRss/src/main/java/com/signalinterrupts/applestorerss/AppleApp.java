@@ -139,7 +139,7 @@ class AppleApp {
 
 	/*
 	Thoughts for further development:  add int field to AppleApps for easier sorting instead of sorting by Title;
-	Less resource intensive than comparing Strings;
+	Less resource intensive than comparing Strings?;
 	 */
 	@Override
 	public int hashCode() {
