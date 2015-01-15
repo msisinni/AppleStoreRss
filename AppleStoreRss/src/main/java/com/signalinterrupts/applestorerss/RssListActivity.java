@@ -17,6 +17,7 @@ public class RssListActivity extends ActionBarActivity implements RssListFragmen
 	private static final String SHARED_PREFERENCES_STRING = "AppleRssPreferences";
 	private static final String FAVORITES_SAVED = "favorites";
 	private static final String TAG = "RssListActivity";
+	private DataOrganizer mDataOrganizer = DataOrganizer.get();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +44,8 @@ public class RssListActivity extends ActionBarActivity implements RssListFragmen
 	@Override
 	protected void onPause() {
 		super.onPause();
-		DataOrganizer.get().updateFavoriteAppList();
-		List<AppleApp> favoriteAppList = DataOrganizer.get().getFavoriteAppList();
+		mDataOrganizer.updateFavoriteAppList();
+		List<AppleApp> favoriteAppList = mDataOrganizer.getFavoriteAppList();
 		if (favoriteAppList != null && !favoriteAppList.isEmpty()) {
 			new SaveFavoritesTask().execute();
 			Log.i(TAG, "Saving favorites"); // Leaving these in;
@@ -139,14 +140,14 @@ public class RssListActivity extends ActionBarActivity implements RssListFragmen
 		@Override
 		protected Void doInBackground(Void... params) {
 			FavoritesDatabase favoritesDatabase = new FavoritesDatabase(getApplicationContext());
-			DataOrganizer.get().setFavoriteAppSet(favoritesDatabase.loadFavorites());
+			mDataOrganizer.setFavoriteAppSet(favoritesDatabase.loadFavorites());
 			return null;
 		}
 
 		@Override
 		protected void onPostExecute(Void aVoid) {
 			Log.i(TAG, "Favorites loaded");
-			Log.i(TAG, DataOrganizer.get().getFavoriteAppList().toString());
+			Log.i(TAG, mDataOrganizer.getFavoriteAppList().toString());
 		}
 	}
 
@@ -154,7 +155,7 @@ public class RssListActivity extends ActionBarActivity implements RssListFragmen
 		@Override
 		protected Void doInBackground(Void... params) {
 			FavoritesDatabase favoritesDatabase = new FavoritesDatabase(getApplicationContext());
-			favoritesDatabase.saveFavorites(DataOrganizer.get().getFavoriteAppList());
+			favoritesDatabase.saveFavorites(mDataOrganizer.getFavoriteAppList());
 			return null;
 		}
 

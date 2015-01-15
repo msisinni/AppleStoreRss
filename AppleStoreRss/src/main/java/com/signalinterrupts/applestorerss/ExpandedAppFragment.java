@@ -55,9 +55,6 @@ public class ExpandedAppFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_expanded_app, container, false);
 
-		final String storeLink = mAppleApp.getStoreLink();
-		final String companyLink = mAppleApp.getCompanyLink();
-		final String genreLink = mAppleApp.getGenreLink();
 
 		mAppImageView = (ImageView) view.findViewById(R.id.expanded_app_imageView);
 		mAppImageView.setImageResource(R.drawable.loading_image_large);
@@ -65,21 +62,11 @@ public class ExpandedAppFragment extends Fragment {
 		// Could make one OnClickListener for all webpage openers, but too messy with switch based on view ids imo;
 		TextView titleTextView = (TextView) view.findViewById(R.id.expanded_app_titleTextView);
 		titleTextView.setText(mAppleApp.getAppTitle());
-		titleTextView.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				openWebPage(storeLink);
-			}
-		});
+		titleTextView.setOnClickListener(webLinkViewListener);
 
 		TextView companyNameTextView = (TextView) view.findViewById(R.id.expanded_app_companyNameTextView);
 		companyNameTextView.setText(mAppleApp.getCompanyName());
-		companyNameTextView.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				openWebPage(companyLink);
-			}
-		});
+		companyNameTextView.setOnClickListener(webLinkViewListener);
 
 		mFavoriteCheckBox = (CheckBox) view.findViewById(R.id.expanded_app_favoriteCheckBox);
 		mFavoriteCheckBox.setChecked(mAppleApp.isFavorite());
@@ -93,31 +80,16 @@ public class ExpandedAppFragment extends Fragment {
 
 		Button purchaseButton = (Button) view.findViewById(R.id.expanded_app_purchaseButton);
 		purchaseButton.setText(mAppleApp.getAppPrice());
-		purchaseButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				openWebPage(storeLink);
-			}
-		});
+		purchaseButton.setOnClickListener(webLinkViewListener);
 
 		ImageView genreImageView = (ImageView) view.findViewById(R.id.expanded_app_genreImageView);
 		// set appropriate image for genre of app;
 		genreImageView.setImageResource(genreImageSwitch(mAppleApp.getGenre()));
-		genreImageView.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				openWebPage(genreLink);
-			}
-		});
+		genreImageView.setOnClickListener(webLinkViewListener);
 
 		TextView genreTextView = (TextView) view.findViewById(R.id.expanded_app_genreTextView);
 		genreTextView.setText(mAppleApp.getGenre());
-		genreTextView.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				openWebPage(genreLink);
-			}
-		});
+		genreTextView.setOnClickListener(webLinkViewListener);
 
 		ImageView shareImageView = (ImageView) view.findViewById(R.id.expanded_app_shareImageView);
 		shareImageView.setOnClickListener(new View.OnClickListener() {
@@ -145,6 +117,35 @@ public class ExpandedAppFragment extends Fragment {
 		copyrightTextView.setText(mAppleApp.getCopyright());
 
 		return view;
+	}
+
+	private View.OnClickListener webLinkViewListener = new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			String webLink = webPageSwitch(v.getId());
+			if (webLink != null) {
+				openWebPage(webLink);
+			}
+		}
+	};
+
+	private String webPageSwitch(int viewId) {
+		final String storeLink = mAppleApp.getStoreLink();
+		final String companyLink = mAppleApp.getCompanyLink();
+		final String genreLink = mAppleApp.getGenreLink();
+		switch (viewId) {
+			case R.id.expanded_app_titleTextView:
+			case R.id.expanded_app_purchaseButton:
+				return storeLink;
+			case R.id.expanded_app_companyNameTextView:
+				return companyLink;
+			case R.id.expanded_app_genreImageView:
+			case R.id.expanded_app_genreTextView:
+				return genreLink;
+			default:
+				return null;
+		}
+
 	}
 
 	private void openWebPage(String link) {

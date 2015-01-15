@@ -33,6 +33,7 @@ public class RssListFragment extends ListFragment {
 	private ImageDownloader<ImageView> mImageThread;
 	private DownloadAppsTask mDownloadAppsTask;
 	protected RssAdapter mRssAdapter;
+	private DataOrganizer mDataOrganizer = DataOrganizer.get();
 
 	private boolean inRssMode = true;
 
@@ -51,7 +52,7 @@ public class RssListFragment extends ListFragment {
 		Log.i(TAG, "inRssMode = " + inRssMode);
 		if (inRssMode) {
 			getActivity().setTitle(getString(R.string.list_fragment_title));
-			mAppleAppList = DataOrganizer.get().getAppleAppList();
+			mAppleAppList = mDataOrganizer.getAppleAppList();
 			if (mAppleAppList == null || mAppleAppList.isEmpty()) {
 				mDownloadAppsTask = new DownloadAppsTask();
 				mDownloadAppsTask.execute();
@@ -61,7 +62,7 @@ public class RssListFragment extends ListFragment {
 			}
 		} else {
 			getActivity().setTitle(getString(R.string.list_fragment_title_favorites));
-			mAppleAppList = DataOrganizer.get().getFavoriteAppList();
+			mAppleAppList = mDataOrganizer.getFavoriteAppList();
 			if (mAppleAppList != null && !mAppleAppList.isEmpty()) {
 				mRssAdapter = new RssAdapter(mAppleAppList);
 				setListAdapter(mRssAdapter);
@@ -74,7 +75,7 @@ public class RssListFragment extends ListFragment {
 			public void onImageDownloaded(ImageView imageView, String imageUrl, Bitmap bitmap) {
 				if (isVisible()) { // make sure the Fragment shows the ImageView in question;
 					imageView.setImageBitmap(bitmap);
-					DataOrganizer.get().addBitmapToCache(imageUrl, bitmap);
+					mDataOrganizer.addBitmapToCache(imageUrl, bitmap);
 				}
 			}
 		});
@@ -116,7 +117,7 @@ public class RssListFragment extends ListFragment {
 			mDownloadAppsTask.cancel(true);
 		}
 		inRssMode = true;
-		DataOrganizer.get().updateFavoriteAppList();
+		mDataOrganizer.updateFavoriteAppList();
 		mDownloadAppsTask = new DownloadAppsTask();
 		mDownloadAppsTask.execute();
 		updateUi();
@@ -170,7 +171,7 @@ public class RssListFragment extends ListFragment {
 	public void switchListMode() {
 		mImageThread.clearQueue();
 		mImageThread.quit();
-		DataOrganizer.get().updateFavoriteAppList();
+		mDataOrganizer.updateFavoriteAppList();
 		if (mRssAdapter != null) {
 			mRssAdapter.clear();
 		}
@@ -256,7 +257,7 @@ public class RssListFragment extends ListFragment {
 
 			ImageView appImageSmall = (ImageView) convertView.findViewById(R.id.list_item_app_picture);
 			//if (appImageSmall.getVisibility() == View.VISIBLE) {
-			final Bitmap bitmap = DataOrganizer.get().getBitmapFromCache(appleApp.getImageUrlSmall());
+			final Bitmap bitmap = mDataOrganizer.getBitmapFromCache(appleApp.getImageUrlSmall());
 			if (bitmap == null) { // download if not in cache;
 				appImageSmall.setImageResource(R.drawable.loading_image_small);
 				mImageThread.queueImage(appImageSmall, appleApp.getImageUrlSmall());
@@ -279,9 +280,9 @@ public class RssListFragment extends ListFragment {
 
 		@Override
 		protected void onPostExecute(ArrayList<AppleApp> appleAppList) {
-			DataOrganizer.get().setAppleAppList(appleAppList);
-			DataOrganizer.get().initialCheckBoxes();
-			mAppleAppList = DataOrganizer.get().getAppleAppList();
+			mDataOrganizer.setAppleAppList(appleAppList);
+			mDataOrganizer.initialCheckBoxes();
+			mAppleAppList = mDataOrganizer.getAppleAppList();
 			mRssAdapter = new RssAdapter(mAppleAppList);
 			setListAdapter(mRssAdapter);
 		}
