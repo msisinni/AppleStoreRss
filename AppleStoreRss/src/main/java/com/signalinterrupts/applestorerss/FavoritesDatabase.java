@@ -3,6 +3,7 @@ package com.signalinterrupts.applestorerss;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.CursorWrapper;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -80,27 +81,12 @@ public class FavoritesDatabase extends SQLiteOpenHelper {
 
 		SQLiteDatabase database = getReadableDatabase();
 
-		//String sqlExtract = String.format("Select * from %s order by %s", TABLE_NAME, ROW_ID);
-		String sqlExtract = String.format("Select %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s from %s order by %s", TITLE, PRICE, SUMMARY, COPYRIGHT, COMPANY_NAME, COMPANY_LINK, STORE_LINK,
-				                                 DATE, IMAGE_SMALL, IMAGE_BIG, GENRE, GENRE_LINK, TABLE_NAME, ROW_ID);
+		Cursor cursor = database.query(TABLE_NAME, null, null, null, null, null, null);
 
-		Cursor cursor = database.rawQuery(sqlExtract, null);
+		AppleAppCursor wrappedCursor = new AppleAppCursor(cursor);
 
-		while (cursor.moveToNext()) {
-			AppleApp.Builder builder = new AppleApp.Builder(cursor.getString(0));
-			builder.appPrice(cursor.getString(1))
-					.summary(cursor.getString(2))
-					.copyright(cursor.getString(3))
-					.companyName(cursor.getString(4))
-					.companyLink(cursor.getString(5))
-					.storeLink(cursor.getString(6))
-					.date(cursor.getString(7))
-					.imageUrlSmall(cursor.getString(8))
-					.imageUrlBig(cursor.getString(9))
-					.genre(cursor.getString(10))
-					.genreLink(cursor.getString(11));
-
-			AppleApp appleApp = builder.build();
+		while (wrappedCursor.moveToNext()) {
+			AppleApp appleApp = wrappedCursor.getAppleApp();
 			appleApp.setFavorite(true);
 			favoriteAppSet.add(appleApp);
 		}
@@ -110,6 +96,34 @@ public class FavoritesDatabase extends SQLiteOpenHelper {
 		database.close();
 
 		return favoriteAppSet;
+	}
+
+	private static class AppleAppCursor extends CursorWrapper {
+		public AppleAppCursor(Cursor cursor) {
+			super(cursor);
+		}
+
+		AppleApp getAppleApp() {
+			if (isBeforeFirst() || isAfterLast()) {
+				return null;
+			}
+			AppleApp.Builder builder = new AppleApp.Builder(getString(getColumnIndex(TITLE)))
+					                           .appPrice(getString(getColumnIndex(PRICE)))
+					                           .summary(getString(getColumnIndex(SUMMARY)))
+					                           .copyright(getString(getColumnIndex(COPYRIGHT)))
+					                           .companyName(getString(getColumnIndex(COMPANY_NAME)))
+					                           .companyLink(getString(getColumnIndex(COMPANY_LINK)))
+					                           .storeLink(getString(getColumnIndex(STORE_LINK)))
+					                           .date(getString(getColumnIndex(DATE)))
+					                           .imageUrlSmall(getString(getColumnIndex(IMAGE_SMALL)))
+					                           .imageUrlBig(getString(getColumnIndex(IMAGE_BIG)))
+					                           .genre(getString(getColumnIndex(GENRE)))
+					                           .genreLink(getString(getColumnIndex(GENRE_LINK)));
+
+			return builder.build();
+
+
+		}
 	}
 
 	/*
