@@ -73,7 +73,6 @@ public class FavoritesDatabase extends SQLiteOpenHelper {
 				i++;
 			}
 		}
-
 	}
 
 	protected HashSet<AppleApp> loadFavorites() {
@@ -122,9 +121,7 @@ public class FavoritesDatabase extends SQLiteOpenHelper {
 
 			return builder.build();
 
-
 		}
 	}
-
 
 }
