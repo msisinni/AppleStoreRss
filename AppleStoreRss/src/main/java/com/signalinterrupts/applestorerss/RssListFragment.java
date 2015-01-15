@@ -261,7 +261,7 @@ public class RssListFragment extends ListFragment {
 			if (bitmap == null) { // download if not in cache;
 				appImageSmall.setImageResource(R.drawable.loading_image_small);
 				mImageThread.queueImage(appImageSmall, appleApp.getImageUrlSmall());
-				Log.i(TAG, "Loading image for " + appleApp.getAppTitle());
+				Log.i(TAG, "Downloading image for " + appleApp.getAppTitle());
 			} else { // grab from cache;
 				appImageSmall.setImageBitmap(bitmap);
 			}
