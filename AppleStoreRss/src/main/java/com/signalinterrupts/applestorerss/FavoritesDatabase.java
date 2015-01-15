@@ -126,43 +126,5 @@ public class FavoritesDatabase extends SQLiteOpenHelper {
 		}
 	}
 
-	/*
-	protected AppleAppCursor queryAppleApps() {
-		String sqlExtract = String.format("Select * from %s", TABLE_NAME);
-
-		Cursor wrappedCursor = getReadableDatabase().rawQuery(sqlExtract, null);
-		return new AppleAppCursor(wrappedCursor);
-	}
-
-	protected static class AppleAppCursor extends CursorWrapper {
-
-		public AppleAppCursor(Cursor cursor) {
-			super(cursor);
-		}
-
-		AppleApp getAppleApp() {
-			if (isBeforeFirst() || isAfterLast()) {
-				return null;
-			}
-
-			AppleApp.Builder builder = new AppleApp.Builder(getString(getColumnIndex(TITLE)));
-			builder.appPrice(getString(getColumnIndex(PRICE)))
-					.summary(getString(getColumnIndex(SUMMARY)))
-					.copyright(getString(getColumnIndex(COPYRIGHT)))
-					.companyName(getString(getColumnIndex(COMPANY_NAME)))
-					.companyLink(getString(getColumnIndex(COMPANY_LINK)))
-					.storeLink(getString(getColumnIndex(STORE_LINK)))
-					.date(getString(getColumnIndex(DATE)))
-					.imageUrlSmall(getString(getColumnIndex(IMAGE_SMALL)))
-					.imageUrlBig(getString(getColumnIndex(IMAGE_BIG)))
-					.genre(getString(getColumnIndex(GENRE)))
-					.genreLink(getString(getColumnIndex(GENRE_LINK)));
-
-			AppleApp appleApp = builder.build();
-			appleApp.setFavorite(true);
-			return appleApp;
-		}
-	}
-	*/
 
 }
