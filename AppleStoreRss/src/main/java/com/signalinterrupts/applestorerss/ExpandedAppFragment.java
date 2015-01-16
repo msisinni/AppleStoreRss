@@ -55,11 +55,9 @@ public class ExpandedAppFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_expanded_app, container, false);
 
-
 		mAppImageView = (ImageView) view.findViewById(R.id.expanded_app_imageView);
 		mAppImageView.setImageResource(R.drawable.loading_image_large);
 
-		// Could make one OnClickListener for all webpage openers, but too messy with switch based on view ids imo;
 		TextView titleTextView = (TextView) view.findViewById(R.id.expanded_app_titleTextView);
 		titleTextView.setText(mAppleApp.getAppTitle());
 		titleTextView.setOnClickListener(webLinkViewListener);

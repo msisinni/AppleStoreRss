@@ -22,6 +22,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RssListFragment extends ListFragment {
 
@@ -29,7 +30,7 @@ public class RssListFragment extends ListFragment {
 
 	protected static final String bundleString = "ListFragmentBundle";
 	private RssCallbacks mRssCallbacks;
-	private ArrayList<AppleApp> mAppleAppList;
+	private List<AppleApp> mAppleAppList;
 	private ImageDownloader<ImageView> mImageThread;
 	private DownloadAppsTask mDownloadAppsTask;
 	protected RssAdapter mRssAdapter;
@@ -221,7 +222,7 @@ public class RssListFragment extends ListFragment {
 	}
 
 	private class RssAdapter extends ArrayAdapter<AppleApp> {
-		public RssAdapter(ArrayList<AppleApp> appleAppList) {
+		public RssAdapter(List<AppleApp> appleAppList) {
 			super(getActivity(), 0, appleAppList);
 		}
 
@@ -272,14 +273,14 @@ public class RssListFragment extends ListFragment {
 
 	}
 
-	private class DownloadAppsTask extends AsyncTask<Void, Void, ArrayList<AppleApp>> {
+	private class DownloadAppsTask extends AsyncTask<Void, Void, List<AppleApp>> {
 		@Override
 		protected ArrayList<AppleApp> doInBackground(Void... params) {
 			return new JsonDataPuller().fetchItems();
 		}
 
 		@Override
-		protected void onPostExecute(ArrayList<AppleApp> appleAppList) {
+		protected void onPostExecute(List<AppleApp> appleAppList) {
 			mDataOrganizer.setAppleAppList(appleAppList);
 			mDataOrganizer.initialCheckBoxes();
 			mAppleAppList = mDataOrganizer.getAppleAppList();

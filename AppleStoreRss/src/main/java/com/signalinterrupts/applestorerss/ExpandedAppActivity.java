@@ -8,11 +8,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ExpandedAppActivity extends ActionBarActivity implements ExpandedAppFragment.ExpandedCallbacks {
 
 	protected static final String RSS_OR_FAVORITE = "RorF";
-	private ArrayList<AppleApp> mAppleAppList;
+	private List<AppleApp> mAppleAppList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

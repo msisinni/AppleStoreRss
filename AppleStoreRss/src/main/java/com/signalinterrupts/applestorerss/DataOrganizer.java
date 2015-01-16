@@ -1,18 +1,18 @@
 package com.signalinterrupts.applestorerss;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v4.util.LruCache;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public enum DataOrganizer {
 	INSTANCE;
 
-	private ArrayList<AppleApp> mAppleAppList;
-	private HashSet<AppleApp> mFavoriteAppSet = new HashSet<>();
+	private List<AppleApp> mAppleAppList;
+	private Set<AppleApp> mFavoriteAppSet = new HashSet<>();
 
 	final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024); // Memory in KB;
 	final int cacheSize = Math.min(maxMemory / 8, 350);
@@ -26,11 +26,11 @@ public enum DataOrganizer {
 		return INSTANCE;
 	}
 
-	public ArrayList<AppleApp> getAppleAppList() {
+	public List<AppleApp> getAppleAppList() {
 		return mAppleAppList;
 	}
 
-	public void setAppleAppList(ArrayList<AppleApp> appleAppList) {
+	public void setAppleAppList(List<AppleApp> appleAppList) {
 		mAppleAppList = appleAppList;
 	}
 
@@ -60,14 +60,14 @@ public enum DataOrganizer {
 
 	public void updateFavoriteAppList() {
 		Set<AppleApp> removalSet = new HashSet<>();
-		for (AppleApp appleApp : mFavoriteAppSet) { // get rid of un-favorites
+		for (AppleApp appleApp : mFavoriteAppSet) { // get rid of unchecked favorites from favorites set
 			if (!appleApp.isFavorite()) {
 				removalSet.add(appleApp);
 			}
 		}
 		mFavoriteAppSet.removeAll(removalSet);
 
-		for (AppleApp appleApp : mAppleAppList) { // add new favorites / replace existing (in case update to app store)
+		for (AppleApp appleApp : mAppleAppList) { // add new favorites / replace existing (in case update to app store) from main list to favorites set
 			if (appleApp.isFavorite()) {
 				mFavoriteAppSet.add(appleApp);
 			} else if (mFavoriteAppSet.contains(appleApp)) {
@@ -84,7 +84,7 @@ public enum DataOrganizer {
 		}
 	}
 
-	public void setFavoriteAppSet(HashSet<AppleApp> favoriteAppSet) {
+	public void setFavoriteAppSet(Set<AppleApp> favoriteAppSet) {
 		mFavoriteAppSet = favoriteAppSet;
 	}
 

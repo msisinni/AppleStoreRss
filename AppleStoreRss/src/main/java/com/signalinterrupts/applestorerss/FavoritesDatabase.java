@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class FavoritesDatabase extends SQLiteOpenHelper {
 
@@ -75,8 +76,8 @@ public class FavoritesDatabase extends SQLiteOpenHelper {
 		}
 	}
 
-	protected HashSet<AppleApp> loadFavorites() {
-		HashSet<AppleApp> favoriteAppSet = new HashSet<>();
+	protected Set<AppleApp> loadFavorites() {
+		Set<AppleApp> favoriteAppSet = new HashSet<>();
 
 		SQLiteDatabase database = getReadableDatabase();
 
